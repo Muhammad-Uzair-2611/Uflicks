@@ -62,9 +62,9 @@ function App() {
       ) : (
         <>
           <div className="mt-5">
-            <h1 className="sm:text-4xl text-3xl font-bold px-4">Trending</h1>
+            <h1 className="sm:text-4xl text-2xl font-semibold sm:px-4 px-2">Trending</h1>
           </div>
-          <div className="sm:px-4 px-0  sm:mt-10 mt-4 items-center relative">
+          <div className="h-55 sm:h-fit mb-5 sm:px-4 px-0  sm:mt-10 mt-0 items-center relative">
             <div
               className="hidden sm:flex justify-start gap-x-4 items-center relative z-10 w-fit bottom-[63%] 
          [&>button]:lg:text-[40px] [&>button]:text-[30px] [&>button]:cursor-pointer"
@@ -98,11 +98,12 @@ function App() {
             </div>
           </div>
           <div className="">
-            <h1 className="sm:text-4xl text-3xl font-bold px-4">Now Playing</h1>
+            <h1 className="sm:text-4xl text-2xl font-semibold sm:px-4 px-2">Now Playing</h1>
           </div>
-          <div className="sm:px-4 px-0 sm:mt-10 mt-4 sm:mb-10 mb-0 relative">
+          <div className="h-55 sm:h-fit mb-5 sm:px-4 px-0 sm:mt-10 mt-0 sm:mb-10  relative">
             <div
-              className="hidden sm:flex justify-start gap-x-4 items-center relative z-10 w-fit bottom-[63%] 
+              className="hidden sm:flex justify-
+              start gap-x-4 items-center relative z-10 w-fit bottom-[63%] 
          [&>button]:lg:text-[40px] [&>button]:text-[30px] [&>button]:cursor-pointer"
             >
               <button
@@ -133,12 +134,12 @@ function App() {
               })}
             </div>
           </div>
-          <div className="mt-5 flex gap-x-20">
-            <h1 className="sm:text-4xl text-3xl font-bold px-4">
+          <div className="">
+            <h1 className="sm:text-4xl text-2xl font-semibold sm:px-4 px-2">
               Popular Tv Shows
             </h1>
           </div>
-          <div className="sm:px-4 px-0 sm:mt-10 mt-4 items-center relative">
+          <div className="h-55 sm:h-fit mb-5 sm:px-4 px-0 sm:mt-10 mt-0 items-center relative">
             <div
               className="hidden sm:flex justify-start gap-x-4 items-center relative z-10 w-fit bottom-[63%] 
          [&>button]:lg:text-[40px] [&>button]:text-[30px] [&>button]:cursor-pointer"

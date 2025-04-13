@@ -2,10 +2,11 @@ import { FaSearch } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { React, useState, useRef } from "react";
 import { useSearch } from "../Context/Searchcontext";
+import { getSearchResult } from "../services/movie_api";
 const Searchbar = () => {
   //*States
-  const [query, set_Query] = useState("");
-  const { isFocus, setIsFocus } = useSearch();
+  const { isFocus, setIsFocus, searchItem, setSearchItem, setSearchResult } =
+    useSearch();
   const Search_Ref = useRef(null);
   //*Functions
   const Debounce = (func, delay) => {
@@ -18,40 +19,50 @@ const Searchbar = () => {
     };
   };
   const debouncedSearch = useRef(
-    Debounce((value) => {
-      console.log("Searching for:", value);
+    Debounce(async (value) => {
+      let searchResult = await getSearchResult(searchItem);
+      setSearchResult(searchResult);
     }, 500)
   ).current;
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    set_Query(value);
+    setSearchItem(value);
     debouncedSearch(value);
   };
   const handleClick = () => {
-    !isFocus && Search_Ref.current?.focus();
+    !isFocus ? Search_Ref.current?.focus() : setIsFocus(false);
   };
 
   return (
     <div className="w-full flex justify-center mt-5">
       <div
-        className={`px-3 bg-neutral-800 flex items-center gap-x-2 sm:w-2/3 w-[80%] sm:rounded-3xl rounded-xl h-10`}
+        className={`px-3 bg-neutral-800 flex items-center gap-x-2 sm:w-2/3 w-[93%] sm:rounded-3xl rounded-lg h-fit sm:py-2 py-1`}
       >
-        <span onClick={handleClick} className="text-xl cursor-pointer">
+        <span
+          onClick={handleClick}
+          className="sm:text-xl text-sm cursor-pointer"
+        >
           {isFocus ? <IoArrowBack /> : <FaSearch />}
         </span>
         <input
           ref={Search_Ref}
-          value={query}
+          value={searchItem}
           onChange={handleSearch}
           onFocus={() => {
             setIsFocus(true);
           }}
-          className="w-full outline-0"
+          className="w-full outline-0 placeholder:text-sm"
           type="search"
           placeholder="Search Movie By Title."
         />
       </div>
+      <button
+        onClick={() => getSearchResult("daredevil")}
+        className="bg-orange-600 p-3 cursor-pointer"
+      >
+        Click me to Search
+      </button>
     </div>
   );
 };

@@ -7,7 +7,8 @@ const nowPlaying_URL = `movie/now_playing?api_key=${API_KEY}`;
 const popularShow_URL = `tv/popular?api_key=${API_KEY}`;
 const topRatedMovies_URL = `movie/top_rated?api_key=${API_KEY}`;
 const topRatedTvShows_URL = `tv/top_rated?api_key=${API_KEY}`;
-
+const SearchMovie_URL = `search/movie?api_key=${API_KEY}&query=`;
+const SearchShow_URL = `search/tv?api_key=${API_KEY}&query=`;
 export const getMovies = async (title) => {
   const fetch = await axios.get(`${BASE_URL}${search_URL}${title}`);
   let response = fetch.data.results;
@@ -90,4 +91,21 @@ export const getPopularShow = async () => {
     };
   });
   return popularShow;
+};
+export const getSearchResult = async (query) => {
+  const fetch = await axios.get(`${BASE_URL}${SearchMovie_URL}${query}`);
+  const fetch2 = await axios.get(`${BASE_URL}${SearchShow_URL}${query}`);
+  let response = [...fetch.data.results, ...fetch2.data.results];
+  const SearchResult = response.map((movie) => {
+    return {
+      id: movie.id,
+      title: movie.name ? movie.name : movie.title,
+      release_date: movie.first_air_date
+        ? movie.first_air_date
+        : movie.release_date,
+      poster: movie.poster_path,
+      overview: movie.overview,
+    };
+  });
+  console.log(SearchResult);
 };
