@@ -1,14 +1,25 @@
 import { FaSearch } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
-import { React, useState, useRef } from "react";
+import { React, useState, useRef, useEffect } from "react";
 import { useSearch } from "../Context/Searchcontext";
 import { getSearchResult } from "../services/movie_api";
 const Searchbar = () => {
   //*States
-  const { isFocus, setIsFocus, searchItem, setSearchItem, setSearchResult } =
-    useSearch();
+  const {
+    isFocus,
+    setIsFocus,
+    searchItem,
+    setSearchItem,
+    setSearchResult,
+    searchResult,
+  } = useSearch();
   const Search_Ref = useRef(null);
-  //*Functions
+
+  useEffect(() => {
+    console.log(searchResult);
+  }, [searchResult]);
+
+  //*Functionss
   const Debounce = (func, delay) => {
     let timeout;
     return (...args) => {
@@ -20,14 +31,15 @@ const Searchbar = () => {
   };
   const debouncedSearch = useRef(
     Debounce(async (value) => {
-      let searchResult = await getSearchResult(searchItem);
+      let searchResult = await getSearchResult(value);
+      console.log(searchResult);
       setSearchResult(searchResult);
     }, 500)
   ).current;
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchItem(value);
+    value != " " && setSearchItem(value);
     debouncedSearch(value);
   };
   const handleClick = () => {
@@ -57,12 +69,6 @@ const Searchbar = () => {
           placeholder="Search Movie By Title."
         />
       </div>
-      <button
-        onClick={() => getSearchResult("daredevil")}
-        className="bg-orange-600 p-3 cursor-pointer"
-      >
-        Click me to Search
-      </button>
     </div>
   );
 };

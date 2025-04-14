@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import Layout from "./Layout.jsx";
 import { SearchProvider } from "./Context/Searchcontext.jsx";
+import PageNotFound from "./Components/PageNotFound.jsx";
 
 const routes = createBrowserRouter([
   {
@@ -13,6 +14,11 @@ const routes = createBrowserRouter([
       {
         path: "",
         element: <App />,
+      },
+      {
+        path: "*",
+        element: <PageNotFound />,
+        handle: { hideSearch: true },
       },
     ],
   },

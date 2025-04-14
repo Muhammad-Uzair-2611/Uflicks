@@ -12,7 +12,6 @@ const SearchShow_URL = `search/tv?api_key=${API_KEY}&query=`;
 export const getMovies = async (title) => {
   const fetch = await axios.get(`${BASE_URL}${search_URL}${title}`);
   let response = fetch.data.results;
-  console.log(response);
 };
 
 export const getTrendingMovies = async () => {
@@ -95,17 +94,29 @@ export const getPopularShow = async () => {
 export const getSearchResult = async (query) => {
   const fetch = await axios.get(`${BASE_URL}${SearchMovie_URL}${query}`);
   const fetch2 = await axios.get(`${BASE_URL}${SearchShow_URL}${query}`);
-  let response = [...fetch.data.results, ...fetch2.data.results];
-  const SearchResult = response.map((movie) => {
-    return {
+
+  const response = [...fetch.data.results, ...fetch2.data.results];
+
+  const SearchResult = response
+    .filter((movie) => movie.poster_path != null && movie.overview !== "")
+    .map((movie) => ({
       id: movie.id,
       title: movie.name ? movie.name : movie.title,
-      release_date: movie.first_air_date
-        ? movie.first_air_date
-        : movie.release_date,
+      release_date: movie.first_air_date || movie.release_date,
       poster: movie.poster_path,
       overview: movie.overview,
-    };
-  });
-  console.log(SearchResult);
+    }));
+
+  return SearchResult;
+};
+
+export const getImageURL = async () => {
+  const fetch = await axios.get(
+    `https://api.themoviedb.org/3/configuration?api_key=${API_KEY}`
+  );
+  const ImageURl = fetch.map((d) => ({
+    url: d.data.images.secure_base_url,
+    sizes: d.data.images.poster_sizes,
+  }));
+  // return ImageURl;
 };

@@ -22,7 +22,6 @@ function App() {
 
   //*Variables
   useEffect(() => {
-    console.log(popular_TV_Show);
   }, [popular_TV_Show]);
 
   //*Effects
