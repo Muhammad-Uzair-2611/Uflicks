@@ -6,6 +6,7 @@ export function SearchProvider({ children }) {
   const [isFocus, setIsFocus] = useState(false);
   const [searchItem, setSearchItem] = useState("");
   const [searchResult, setSearchResult] = useState([""]);
+  const [filter, setFilter] = useState({});
 
   return (
     <SearchContext.Provider
@@ -16,6 +17,8 @@ export function SearchProvider({ children }) {
         setSearchItem,
         searchResult,
         setSearchResult,
+        filter,
+        setFilter,
       }}
     >
       {children}
