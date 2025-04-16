@@ -6,6 +6,7 @@ import {
   getTrendingMovies,
   getTNowPlayingMovies,
   getPopularShow,
+  getImageURL,
 } from "./services/movie_api";
 import Movie_Sugesstions from "./Components/Movie_Sugesstions";
 import ErrorBoundary from "./Components/ErrorBoundary";
@@ -17,6 +18,7 @@ function App() {
   const [now_Playing, set_Now_Playing] = useState([]);
   const [popular_TV_Show, set_Popular_TV_Show] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageURL, setImageURL] = useState();
   const [error, setError] = useState(null);
   const { isFocus } = useSearch();
   const trending_Movie_crousel = useRef(null);
@@ -83,14 +85,17 @@ function App() {
       try {
         setLoading(true);
         setError(null);
-        const [trendingMovies, nowPlaying, popularShow] = await Promise.all([
-          getTrendingMovies(),
-          getTNowPlayingMovies(),
-          getPopularShow(),
-        ]);
+        const [trendingMovies, nowPlaying, popularShow, ImageURL] =
+          await Promise.all([
+            getTrendingMovies(),
+            getTNowPlayingMovies(),
+            getPopularShow(),
+            getImageURL(),
+          ]);
         set_Trendng_Movies(trendingMovies);
         set_Now_Playing(nowPlaying);
         set_Popular_TV_Show(popularShow);
+        setImageURL(ImageURL);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching data:", err);
@@ -235,7 +240,12 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <MovieCard poster={movie.poster} title={movie.title} />
+                      <MovieCard
+                        url={imageURL.url}
+                        size={imageURL.sizes[1]}
+                        poster={movie.poster}
+                        title={movie.title}
+                      />
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -298,7 +308,12 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <MovieCard poster={movie.poster} title={movie.title} />
+                       <MovieCard
+                        url={imageURL.url}
+                        size={imageURL.sizes[1]}
+                        poster={movie.poster}
+                        title={movie.title}
+                      />
                     </motion.div>
                   ))}
                 </AnimatePresence>
@@ -359,7 +374,12 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <MovieCard poster={movie.poster} title={movie.title} />
+                       <MovieCard
+                        url={imageURL.url}
+                        size={imageURL.sizes[1]}
+                        poster={movie.poster}
+                        title={movie.title}
+                      />
                     </motion.div>
                   ))}
                 </AnimatePresence>

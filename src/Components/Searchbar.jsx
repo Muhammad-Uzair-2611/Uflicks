@@ -1,11 +1,11 @@
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
-import { React, useState, useRef, useEffect } from "react";
+import { React, useState, useRef, useEffect, useCallback } from "react";
 import { useSearch } from "../Context/Searchcontext";
 import { getSearchResult, getGenres } from "../services/movie_api";
 import { motion } from "framer-motion";
 const Searchbar = () => {
-  //*States
+  //*States & Refrences
   const [showFilters, setShowFilters] = useState(false);
   const [genres, setGenres] = useState([]);
   const {
@@ -17,14 +17,8 @@ const Searchbar = () => {
     setFilter,
   } = useSearch();
   const Search_Ref = useRef(null);
-
-  useEffect(() => {
-    async function fetch() {
-      const genres = await getGenres();
-      setGenres(genres);
-    }
-    fetch();
-  }, []);
+  const filterDivRef = useRef(null);
+  const filterBtn = useRef(null);
 
   //*Functionss
   const Debounce = (func, delay) => {
@@ -54,9 +48,6 @@ const Searchbar = () => {
   };
   const handleFilter = () => {
     setShowFilters(!showFilters);
-    setTimeout(() => {
-      setShowFilters(false);
-    }, 4000);
   };
   const handleFilterSelect = (e) => {
     const div = e.target.closest(".genresName");
@@ -68,6 +59,36 @@ const Searchbar = () => {
       });
     }
   };
+  const handleClickOutside = useCallback((e) => {
+    if (
+      filterDivRef.current &&
+      filterBtn.current &&
+      !filterDivRef.current.contains(e.target) &&
+      !filterBtn.current.contains(e.target)
+    ) {
+      setShowFilters(false);
+    }
+  }, []);
+
+  //*Effects
+  useEffect(() => {
+    async function fetch() {
+      const genres = await getGenres();
+      setGenres(genres);
+    }
+    fetch();
+  }, []);
+  useEffect(() => {
+    if (showFilters) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilters]);
 
   return (
     <div className="w-full flex justify-center mt-5">
@@ -96,7 +117,7 @@ const Searchbar = () => {
           type="search"
           placeholder="Search Movie By Title."
         />
-        <span>
+        <span ref={filterBtn}>
           <FaFilter onClick={handleFilter} className="text-lg cursor-pointer" />
         </span>
         {showFilters && (
@@ -106,8 +127,9 @@ const Searchbar = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             onClick={handleFilterSelect}
+            ref={filterDivRef}
             className="h-fit w-fit
-         shadow-sm shadow-gray-400 bg-neutral-950 absolute sm:right-4 right-2 sm:-bottom-75 -bottom-60 grid grid-cols-3 gap-4 rounded-md py-3 sm:px-4 px-2 [&>div]:flex [&>div]:gap-x-2 z-10 [&>div]:font-semibold 
+         shadow-sm shadow-gray-400 bg-neutral-950 absolute sm:right-4 right-2 sm:-bottom-80 -bottom-60 grid grid-cols-3 gap-4 rounded-md py-3 sm:px-4 px-2 [&>div]:flex [&>div]:gap-x-2 z-10 [&>div]:font-semibold 
          [&>div>input]:cursor-pointer sm:[&>div]:text-lg [&>div]:text-[10px]"
           >
             {genres.map((genre) => (

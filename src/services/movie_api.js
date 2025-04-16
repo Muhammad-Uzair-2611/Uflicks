@@ -11,7 +11,7 @@ const topRatedTvShows_URL = `tv/top_rated?api_key=${API_KEY}`;
 const SearchMovie_URL = `search/movie?api_key=${API_KEY}&query=`;
 const SearchShow_URL = `search/tv?api_key=${API_KEY}&query=`;
 const genres_URL = `genre/movie/list?api_key=${API_KEY}`;
-const filtedMovies_URL = `discover/movie?api_key=${API_KEY}&with_genres=`;
+const filteredMovies_URL = `discover/movie?api_key=${API_KEY}&with_genres=`;
 
 // Custom error handler
 const handleApiError = (error) => {
@@ -171,18 +171,29 @@ export const getGenres = async () => {
 };
 export const getFliteredMovies = async (genre) => {
   try {
-    const fetch = await axios.get(`${BASE_URL}${filtedMovies_URL}${genre}`);
-    const response = fetch.data.results;
+    const allMovies = [];
+    const totalPages = 9; // Fetching pages 1 to 13
 
-    return response
-      .filter((movie) => movie.poster_path != null && movie.overview !== "")
-      .map((movie) => ({
-        id: movie.id,
-        title: movie.title,
-        release_date: movie.release_date,
-        poster: movie.poster_path,
-        overview: movie.overview,
-      }));
+    for (let page = 1; page <= totalPages; page++) {
+      const fetch = await axios.get(
+        `${BASE_URL}${filteredMovies_URL}${genre}&page=${page}`
+      );
+      const response = fetch.data.results;
+
+      const filteredMovies = response 
+        .filter((movie) => movie.poster_path != null && movie.overview !== "")
+        .map((movie) => ({
+          id: movie.id,
+          title: movie.title,
+          release_date: movie.release_date,
+          poster: movie.poster_path,
+          overview: movie.overview,
+        }));
+
+      allMovies.push(...filteredMovies);
+    }
+
+    return allMovies;
   } catch (error) {
     handleApiError(error);
   }

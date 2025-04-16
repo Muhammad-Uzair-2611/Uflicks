@@ -10,15 +10,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Movie_Sugesstions = () => {
   //*States
-  const [top_Rated_Movies, set_Top_Rated_Movies] = useState([]);
-  const [top_Rated_Shows, set_Top_Rated_Shows] = useState([]);
-  const [suggested_Media, set_Suggested_Media] = useState([]);
   const [ImageURL, setImageURL] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { searchItem, searchResult, filter } = useSearch();
-  const [currentResult, setCurrentResult] = useState(
-    searchItem === "" ? suggested_Media : searchResult
+  const [currentResult, setCurrentResult] = useState([]
   );
 
   //*Effects
@@ -27,13 +23,7 @@ const Movie_Sugesstions = () => {
       try {
         setLoading(true);
         setError(null);
-        const [movies, shows, imageURl] = await Promise.all([
-          topRatedMovies(),
-          topRatedTvShows(),
-          getImageURL(),
-        ]);
-        set_Top_Rated_Movies(movies);
-        set_Top_Rated_Shows(shows);
+        const imageURl = await getImageURL();
         setImageURL(imageURl);
       } catch (err) {
         setError(err.message);
@@ -45,29 +35,23 @@ const Movie_Sugesstions = () => {
     fetchData();
   }, []);
   useEffect(() => {
-    async function fetch() {
-      const movies = await getFliteredMovies(
-        filter.id ? filter.id : "28,12,878"
-      );
-      setCurrentResult(movies);
-      console.log(currentResult);
-    }
-    fetch();
-  }, [filter]);
-
-  useEffect(() => {
-    try {
-      const combined = [...top_Rated_Movies, ...top_Rated_Shows];
-      for (let i = combined.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [combined[i], combined[j]] = [combined[j], combined[i]];
+    async function fetchMovies() {
+      setLoading(true); // Set loading to true when starting the fetch
+      try {
+        const movies = await getFliteredMovies(
+          filter.id ? filter.id : "28,12,878"
+        );
+        setCurrentResult(movies);
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching content:", err);
+      } finally {
+        setLoading(false); // Set loading to false once fetch is complete
       }
-      set_Suggested_Media(combined);
-    } catch (err) {
-      console.error("Error shuffling media:", err);
-      setError("Error processing media data");
     }
-  }, [top_Rated_Movies, top_Rated_Shows]);
+
+    fetchMovies();
+  }, [filter]); // Re-run the effect when `filter` changes
 
   // Animation variants
   const containerVariants = {
@@ -183,15 +167,15 @@ const Movie_Sugesstions = () => {
   }
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 ">
       <motion.div
-        className="sm:text-2xl text-xl sm:mb-5 mb-3 sm:px-3 px-2 font-semibold"
+        className="sm:text-3xl text-xl sm:mb-5 mb-3 sm:px-4 px-2 font-semibold"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         {searchItem === ""
-          ? `${filter.name ? filter.name : "Discover"}`
+          ? `${filter.name ? `${filter.name}` : `Discover:`}`
           : `Search Results: ${searchResult.length}`}
       </motion.div>
       <motion.div
@@ -213,12 +197,13 @@ const Movie_Sugesstions = () => {
                   whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, scale: 0.8 }}
                 >
-                  <div
-                    className="md:min-w-30 md:w-30 md:h-45 sm:min-w-28 sm:w-28 sm:h-40 w-28 h-42 rounded-lg cursor-pointer bg-no-repeat bg-cover shadow-sm shadow-gray-500"
-                    style={{
-                      backgroundImage: `url(${ImageURL.url}${ImageURL.sizes[5]}${movie.poster})`,
-                    }}
-                  ></div>
+                  <div className="md:min-w-30 md:w-30 md:h-45 sm:min-w-28 sm:w-28 sm:h-40 w-25 h-37 overflow-hidden rounded-lg cursor-pointer bg-no-repeat bg-cover shadow-sm shadow-gray-500">
+                    <img
+                      loading="lazy"
+                      src={`${ImageURL.url}${ImageURL.sizes[1]}${movie.poster}`}
+                      alt=""
+                    />
+                  </div>
                   <div className="">
                     <div className="mb-4">
                       <div className="font-semibold md:text-xl sm:text-lg hidden sm:block mb-2">
