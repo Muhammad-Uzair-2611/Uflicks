@@ -1,4 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react";
 import MovieCard from "./Components/MovieCard";
 import { FaChevronLeft } from "react-icons/fa";
 import { useSearch } from "./Context/Searchcontext";
@@ -8,9 +16,14 @@ import {
   getPopularShow,
   getImageURL,
 } from "./services/movie_api";
-import Movie_Sugesstions from "./Components/Movie_Sugesstions";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Lazy load the Movie_Sugesstions component
+const Movie_Sugesstions = lazy(() => import("./Components/Movie_Sugesstions"));
+
+// Memoized MovieCard component
+const MemoizedMovieCard = React.memo(MovieCard);
 
 function App() {
   //*States & Ref
@@ -25,62 +38,75 @@ function App() {
   const now_Playing_crousel = useRef(null);
   const popular_Show_crousel = useRef(null);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
+  // Memoized animation variants
+  const containerVariants = useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: 0.1,
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
+  const itemVariants = useMemo(
+    () => ({
+      hidden: { y: 20, opacity: 0 },
+      visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+          duration: 0.5,
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
-  const loadingVariants = {
-    animate: {
-      scale: [1, 1.2, 1],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        ease: "easeInOut",
+  const loadingVariants = useMemo(
+    () => ({
+      animate: {
+        scale: [1, 1.2, 1],
+        transition: {
+          duration: 1.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
       },
-    },
-  };
+    }),
+    []
+  );
 
-  const buttonVariants = {
-    initial: {
-      scale: 1,
-      opacity: 0.7,
-    },
-    hover: {
-      scale: 1.1,
-      opacity: 1,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
+  const buttonVariants = useMemo(
+    () => ({
+      initial: {
+        scale: 1,
+        opacity: 0.7,
       },
-    },
-    tap: {
-      scale: 0.95,
-      transition: {
-        duration: 0.1,
+      hover: {
+        scale: 1.1,
+        opacity: 1,
+        transition: {
+          duration: 0.2,
+          ease: "easeOut",
+        },
       },
-    },
-  };
+      tap: {
+        scale: 0.95,
+        transition: {
+          duration: 0.1,
+        },
+      },
+    }),
+    []
+  );
 
   //*Effects
   useEffect(() => {
+    let mounted = true;
     async function fetchData() {
       try {
         setLoading(true);
@@ -92,22 +118,31 @@ function App() {
             getPopularShow(),
             getImageURL(),
           ]);
-        set_Trendng_Movies(trendingMovies);
-        set_Now_Playing(nowPlaying);
-        set_Popular_TV_Show(popularShow);
-        setImageURL(ImageURL);
+        if (mounted) {
+          set_Trendng_Movies(trendingMovies);
+          set_Now_Playing(nowPlaying);
+          set_Popular_TV_Show(popularShow);
+          setImageURL(ImageURL);
+        }
       } catch (err) {
-        setError(err.message);
-        console.error("Error fetching data:", err);
+        if (mounted) {
+          setError(err.message);
+          console.error("Error fetching data:", err);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
     fetchData();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   //*Functions
-  const handleclick = (direction, e) => {
+  const handleclick = useCallback((direction, e) => {
     try {
       if (direction === "right") {
         if (e.currentTarget.id === "trending_right")
@@ -125,7 +160,7 @@ function App() {
     } catch (err) {
       console.error("Error handling click:", err);
     }
-  };
+  }, []);
 
   if (loading) {
     return (
@@ -181,7 +216,9 @@ function App() {
     <ErrorBoundary>
       <div className="">
         {isFocus ? (
-          <Movie_Sugesstions />
+          <Suspense fallback={<div>Loading Movie_Sugesstions...</div>}>
+            <Movie_Sugesstions />
+          </Suspense>
         ) : (
           <>
             <motion.div
@@ -240,7 +277,7 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <MovieCard
+                      <MemoizedMovieCard
                         url={imageURL.url}
                         size={imageURL.sizes[1]}
                         poster={movie.poster}
@@ -308,7 +345,7 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                       <MovieCard
+                      <MemoizedMovieCard
                         url={imageURL.url}
                         size={imageURL.sizes[1]}
                         poster={movie.poster}
@@ -374,7 +411,7 @@ function App() {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
-                       <MovieCard
+                      <MemoizedMovieCard
                         url={imageURL.url}
                         size={imageURL.sizes[1]}
                         poster={movie.poster}

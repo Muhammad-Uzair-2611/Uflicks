@@ -172,7 +172,7 @@ export const getGenres = async () => {
 export const getFliteredMovies = async (genre) => {
   try {
     const allMovies = [];
-    const totalPages = 9; // Fetching pages 1 to 13
+    const totalPages = 1; // Fetching pages 1 to 13
 
     for (let page = 1; page <= totalPages; page++) {
       const fetch = await axios.get(

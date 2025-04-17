@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  topRatedMovies,
-  topRatedTvShows,
-  getImageURL,
-  getFliteredMovies,
-} from "../services/movie_api";
+import { getImageURL, getFliteredMovies } from "../services/movie_api";
 import { useSearch } from "../Context/Searchcontext";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,8 +9,7 @@ const Movie_Sugesstions = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { searchItem, searchResult, filter } = useSearch();
-  const [currentResult, setCurrentResult] = useState([]
-  );
+  const [currentResult, setCurrentResult] = useState([]);
 
   //*Effects
   useEffect(() => {
@@ -25,9 +19,13 @@ const Movie_Sugesstions = () => {
         setError(null);
         const imageURl = await getImageURL();
         setImageURL(imageURl);
+        const movies = await getFliteredMovies(
+          filter.id ? filter.id : "28,12,878"
+        );
+        setCurrentResult(movies);
       } catch (err) {
         setError(err.message);
-        console.error("Error fetching top rated content:", err);
+        console.error("Error fetching content:", err);
       } finally {
         setLoading(false);
       }
@@ -36,7 +34,7 @@ const Movie_Sugesstions = () => {
   }, []);
   useEffect(() => {
     async function fetchMovies() {
-      setLoading(true); // Set loading to true when starting the fetch
+      setLoading(true);
       try {
         const movies = await getFliteredMovies(
           filter.id ? filter.id : "28,12,878"
@@ -46,14 +44,17 @@ const Movie_Sugesstions = () => {
         setError(err.message);
         console.error("Error fetching content:", err);
       } finally {
-        setLoading(false); // Set loading to false once fetch is complete
+        setLoading(false);
       }
     }
 
     fetchMovies();
-  }, [filter]); // Re-run the effect when `filter` changes
+  }, [filter]);
+  useEffect(() => {
+    setCurrentResult(searchResult);
+  }, [searchResult]);
 
-  // Animation variants
+  //* Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -77,7 +78,7 @@ const Movie_Sugesstions = () => {
 
   const loadingVariants = {
     animate: {
-      scale: [1, 1.2, 1],
+      scale: [1, 1.1, 1],
       transition: {
         duration: 1.5,
         repeat: Infinity,
@@ -124,7 +125,7 @@ const Movie_Sugesstions = () => {
           variants={loadingVariants}
           animate="animate"
         >
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
           <motion.p
             className="text-xl text-gray-600"
             animate={{ opacity: [0.5, 1, 0.5] }}
@@ -139,25 +140,25 @@ const Movie_Sugesstions = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-900">
+      <div className="min-h-screen flex items-center justify-center bg-neutral-950 px-4">
         <motion.div
-          className="bg-neutral-800 p-8 rounded-lg shadow-lg max-w-md w-full border border-neutral-700"
+          className="bg-neutral-800 p-6 md:p-8 rounded-lg shadow-lg w-full max-w-sm md:max-w-md lg:max-w-lg border border-neutral-700"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="text-red-500 text-2xl">⚠️</div>
-            <h2 className="text-2xl font-bold text-red-500">
+            <div className="text-red-500 text-xl md:text-2xl">⚠️</div>
+            <h2 className="text-xl md:text-2xl font-bold text-red-500">
               Error Loading Content
             </h2>
           </div>
-          <p className="text-gray-400 mb-6">{error}</p>
+          <p className="text-gray-400 text-sm md:text-base mb-6">{error}</p>
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => window.location.reload()}
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+            className="w-full bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors text-sm md:text-base"
           >
             Try Again
           </motion.button>
@@ -169,7 +170,7 @@ const Movie_Sugesstions = () => {
   return (
     <div className="mt-10 ">
       <motion.div
-        className="sm:text-3xl text-xl sm:mb-5 mb-3 sm:px-4 px-2 font-semibold"
+        className="sm:text-3xl text-xl w-fit sm:mb-5 mb-3 sm:px-4 px-2 font-semibold"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

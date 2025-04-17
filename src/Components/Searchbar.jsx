@@ -8,6 +8,7 @@ const Searchbar = () => {
   //*States & Refrences
   const [showFilters, setShowFilters] = useState(false);
   const [genres, setGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const {
     isFocus,
     setIsFocus,
@@ -33,15 +34,17 @@ const Searchbar = () => {
   const debouncedSearch = useRef(
     Debounce(async (value) => {
       let searchResult = await getSearchResult(value);
-      console.log(searchResult);
       setSearchResult(searchResult);
     }, 500)
   ).current;
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    value != " " && setSearchItem(value);
-    debouncedSearch(value);
+    if (value != " ") {
+      setSelectedGenre(false);
+      setSearchItem(value);
+      debouncedSearch(value);
+    }
   };
   const handleClick = () => {
     !isFocus ? Search_Ref.current?.focus() : setIsFocus(false);
@@ -52,6 +55,7 @@ const Searchbar = () => {
   const handleFilterSelect = (e) => {
     const div = e.target.closest(".genresName");
     if (e.target.id) {
+      setSearchItem("");
       setIsFocus(true);
       setFilter({
         id: e.target.id,
@@ -134,14 +138,16 @@ const Searchbar = () => {
           >
             {genres.map((genre) => (
               <div className="genresName" key={genre.id}>
-                <input type="radio" id={genre.id} name="option" />
+                <input
+                  type="radio"
+                  id={genre.id}
+                  name="option"
+                  checked={selectedGenre === genre.id}
+                  onChange={() => setSelectedGenre(genre.id)}
+                />
                 {genre.name == "Science Fiction" ? "Sci-Fi" : genre.name}
               </div>
             ))}
-            <div className="genresName">
-              <input type="radio" id={"28,12,878"} name="option" />
-              Discover
-            </div>
           </motion.div>
         )}
       </div>
