@@ -7,8 +7,8 @@ import Layout from "./Layout.jsx";
 import { SearchProvider } from "./Context/Searchcontext.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import ErrorBoundary from "./Components/ErrorBoundary";
+import MovieInfo from "./Components/MovieInfo.jsx";
 
-// Create router with error boundary
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -20,6 +20,11 @@ const routes = createBrowserRouter([
         element: <App />,
       },
       {
+        path: "movieInfo",
+        element: <MovieInfo />,
+        handle: { hide_Search_n_navbar: true },
+      },
+      {
         path: "*",
         element: <PageNotFound />,
         handle: { hideSearch: true },
@@ -28,14 +33,12 @@ const routes = createBrowserRouter([
   },
 ]);
 
-// Get root element
+
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
-// Create root with performance optimizations
 const root = createRoot(rootElement);
 
-// Render with StrictMode for development optimizations
 root.render(
   <StrictMode>
     <ErrorBoundary>

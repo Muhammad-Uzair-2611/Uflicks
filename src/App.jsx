@@ -18,6 +18,7 @@ import {
 } from "./services/movie_api";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Lazy load the Movie_Sugesstions component
 const Movie_Sugesstions = lazy(() => import("./Components/Movie_Sugesstions"));
@@ -216,7 +217,7 @@ function App() {
     <ErrorBoundary>
       <div className="">
         {isFocus ? (
-          <Suspense fallback={<div>Loading Movie_Sugesstions...</div>}>
+          <Suspense fallback={<div>Loading Suggested Movies...</div>}>
             <Movie_Sugesstions />
           </Suspense>
         ) : (
@@ -282,6 +283,7 @@ function App() {
                         size={imageURL.sizes[1]}
                         poster={movie.poster}
                         title={movie.title}
+                        id={movie.id}
                       />
                     </motion.div>
                   ))}

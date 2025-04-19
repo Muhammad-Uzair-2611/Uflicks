@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getImageURL, getFliteredMovies } from "../services/movie_api";
 import { useSearch } from "../Context/Searchcontext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Movie_Sugesstions = () => {
-  //*States
+  //*States & Refrences
   const [ImageURL, setImageURL] = useState();
   const [loading, setLoading] = useState(true);
+  const [visibleCardCount, setVisibleCardCount] = useState(10);
   const [error, setError] = useState(null);
   const { searchItem, searchResult, filter } = useSearch();
-  const [currentResult, setCurrentResult] = useState([]);
+  const [currentMovies, setCurrentMovies] = useState([]);
+  const lastRenderedCard = useRef(null);
+  const firstRenderedCard = useRef(null);
 
   //*Effects
   useEffect(() => {
@@ -22,7 +25,8 @@ const Movie_Sugesstions = () => {
         const movies = await getFliteredMovies(
           filter.id ? filter.id : "28,12,878"
         );
-        setCurrentResult(movies);
+        console.log(movies);
+        setCurrentMovies(movies);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching content:", err);
@@ -39,7 +43,7 @@ const Movie_Sugesstions = () => {
         const movies = await getFliteredMovies(
           filter.id ? filter.id : "28,12,878"
         );
-        setCurrentResult(movies);
+        setCurrentMovies(movies);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching content:", err);
@@ -50,9 +54,45 @@ const Movie_Sugesstions = () => {
 
     fetchMovies();
   }, [filter]);
+
   useEffect(() => {
-    setCurrentResult(searchResult);
+    setCurrentMovies(searchResult);
+    setVisibleCardCount(10);
   }, [searchResult]);
+
+  // useEffect(() => {
+  //   console.log(currentMovies)
+  // }, [currentMovies]);
+
+  useEffect(() => {
+    if (visibleCardCount >= currentMovies.length) return; // Stop if all movies are rendered
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry1 = entries[0];
+      const entry2 = entries[1];
+      if (entry1.isIntersecting) {
+        // When the last card is in view, load more
+        setVisibleCardCount((prev) => prev + 10);
+      }
+      if (entry2.isIntersecting) {
+        setVisibleCardCount(10);
+      }
+    });
+
+    // Observe the last rendered card
+    if (lastRenderedCard.current && firstRenderedCard.current) {
+      observer.observe(lastRenderedCard.current);
+      observer.observe(firstRenderedCard.current);
+    }
+
+    // Cleanup the observer when the component is unmounted or updated
+    return () => {
+      if (lastRenderedCard.current) {
+        observer.unobserve(lastRenderedCard.current);
+        observer.unobserve(firstRenderedCard.current);
+      }
+    };
+  }, [visibleCardCount, currentMovies.length]); // Dependencies to trigger effect when visibleCardCount or currentMovies change
 
   //* Animation variants
   const containerVariants = {
@@ -176,24 +216,35 @@ const Movie_Sugesstions = () => {
         transition={{ duration: 0.5 }}
       >
         {searchItem === ""
-          ? `${filter.name ? `${filter.name}` : `Discover:`}`
+          ? `${
+              filter.name
+                ? `${filter.name}: ${currentMovies.length}`
+                : `Discover: ${currentMovies.length}`
+            }`
           : `Search Results: ${searchResult.length}`}
       </motion.div>
       <motion.div
         className={`sm:px-4 px-2 mb-2 sm:gap-y-8 gap-y-8 gap-x-4 sm:block ${
-          currentResult.length > 0 && "grid grid-cols-3"
+          currentMovies.length > 0 && "grid grid-cols-3"
         } `}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <AnimatePresence>
-          {currentResult.length > 0 ? (
-            currentResult.map((movie) =>
+          {currentMovies.length > 0 ? (
+            currentMovies.slice(0, visibleCardCount).map((movie, index) =>
               movie.poster != null && movie.overview !== "" ? (
                 <motion.div
                   key={movie.id}
                   className="sm:bg-neutral-900 bg-none sm:w-full w-fit flex sm:mb-3 mb-0 sm:py-2 p-0 sm:px-3 sm:gap-x-3 rounded-lg"
+                  ref={
+                    index === visibleCardCount - 1
+                      ? lastRenderedCard
+                      : null || index === 0
+                      ? firstRenderedCard
+                      : null
+                  }
                   variants={itemVariants}
                   whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, scale: 0.8 }}

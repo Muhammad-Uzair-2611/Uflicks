@@ -172,7 +172,7 @@ export const getGenres = async () => {
 export const getFliteredMovies = async (genre) => {
   try {
     const allMovies = [];
-    const totalPages = 1; // Fetching pages 1 to 13
+    const totalPages = 9; // Fetching pages 1 to 13
 
     for (let page = 1; page <= totalPages; page++) {
       const fetch = await axios.get(
@@ -180,7 +180,7 @@ export const getFliteredMovies = async (genre) => {
       );
       const response = fetch.data.results;
 
-      const filteredMovies = response 
+      const filteredMovies = response
         .filter((movie) => movie.poster_path != null && movie.overview !== "")
         .map((movie) => ({
           id: movie.id,
@@ -197,4 +197,8 @@ export const getFliteredMovies = async (genre) => {
   } catch (error) {
     handleApiError(error);
   }
+};
+export const getMoviebyID = async (movie_id) => {
+  const fetch = await axios.get(`${BASE_URL}movie/${movie_id}?api_key=${API_KEY}`);
+  console.log(fetch)
 };
