@@ -75,7 +75,7 @@ const Movie_Sugesstions = () => {
             filter
           );
           setHeading(heading);
-          const shows = await getFliteredShows(genreId);
+          const shows = await getFliteredShows(genreId, "show");
           setCurrentData(shows);
         } else {
           const { genreId, heading } = getGenreInfo(
@@ -84,7 +84,7 @@ const Movie_Sugesstions = () => {
             filter
           );
           setHeading(heading);
-          const movies = await getFliteredMovies(genreId);
+          const movies = await getFliteredMovies(genreId, "movie");
           setCurrentData(movies);
         }
       } catch (err) {
@@ -181,6 +181,7 @@ const Movie_Sugesstions = () => {
     setSearchItem("");
     setIsFocus(false);
     const mediaType = e.currentTarget.dataset.type;
+    console.log(mediaType);
     setMovieId({ id: e.currentTarget.id, type: mediaType });
 
     navigate(`/media/${e.currentTarget.id}`);
@@ -277,167 +278,180 @@ const Movie_Sugesstions = () => {
       </div>
     );
   }
-
-  return (
-    <div className="sm:mt-10 flex flex-col items-center justify-center">
-      <motion.div className="flex flex-wrap max-w-[60rem] w-full overflow-hidden items-center justify-between md:text-2xl sm:text-xl text-lg font-semibold">
-        {currentMovies.length > 0 && (
-          <div className="space-x-6 sm:text-xl text-sm py-3 [&>a]:cursor-pointer [&_span]:text-[#f3b00c] [&>a]:tracking-widest">
-            <NavLink
-              to={`/${category}/movies`}
-              className={({ isActive }) =>
-                `pb-1 transition-all rounded-b-xs ${
-                  isActive ? "border-b-3 border-gray-300" : ""
-                }`
-              }
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          variants={loadingVariants}
+          animate="animate"
+        >
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin">
+            {" "}
+          </div>
+          <motion.p
+            className="text-xl text-gray-600"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            Loading...
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+  } else
+    return (
+      <div className="sm:mt-10 w-full flex flex-col items-center justify-center">
+        <div className="flex px-3 w-full items-center justify-between md:text-2xl sm:text-xl text-lg font-semibold">
+          {currentMovies.length > 0 && searchItem == "" && (
+            <div
+              className="space-x-6 sm:text-xl text-sm py-3 [&>a]:cursor-pointer [&_span]:text-[#f3b00c] 
+            [&>a]:tracking-widest"
             >
-              <span>Movies</span>
-            </NavLink>
-            {category !== "horror" && (
               <NavLink
-                to={`/${category}/shows`}
+                to={`/${category}/movies`}
                 className={({ isActive }) =>
                   `pb-1 transition-all rounded-b-xs ${
                     isActive ? "border-b-3 border-gray-300" : ""
                   }`
                 }
               >
-                <span>Shows</span>
+                <span>Movies</span>
               </NavLink>
-            )}
-          </div>
-        )}
-        <div>
-          {searchItem === ""
-            ? heading
-            : `Search Results: ${searchResult?.length || 0}`}
-        </div>
-      </motion.div>
-      {loading ? (
-        <div className="min-h-screen flex items-center justify-center">
-          <motion.div
-            className="flex flex-col items-center gap-4"
-            variants={loadingVariants}
-            animate="animate"
-          >
-            <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-            <motion.p
-              className="text-xl text-gray-600"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              Loading...
-            </motion.p>
-          </motion.div>
-        </div>
-      ) : (
-        <motion.div
-          className={`mb-2 px-3 py-2`}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <AnimatePresence>
-            {currentMovies.length > 0 ? (
-              currentMovies.slice(0, visibleCardCount).map((movie, index) => (
-                <motion.div
-                  key={movie.id}
-                  id={movie.id}
-                  onClick={handleClick}
-                  style={{
-                    backgroundImage: `url(${ImageURL?.url}${ImageURL?.sizes[5]}${movie.banner})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                  }}
-                  className="relative bg-none w-full flex sm:mb-6 mb-3 sm:py-2 p-2 sm:px-3 sm:gap-x-3 rounded-lg cursor-pointer sm:shadow-md shadow-gray-600 min-h-30"
-                  ref={
-                    index === visibleCardCount - 1
-                      ? lastRenderedCard
-                      : index === 0
-                      ? firstRenderedCard
-                      : null
+              {category !== "horror" && (
+                <NavLink
+                  to={`/${category}/shows`}
+                  className={({ isActive }) =>
+                    `pb-1 transition-all rounded-b-xs ${
+                      isActive ? "border-b-3 border-gray-300" : ""
+                    }`
                   }
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                  exit={{ opacity: 0, scale: 0.8 }}
                 >
-                  <div
-                    className={`absolute z-0 bg-black/50 inset-0  duration-700 md:bg-none
+                  <span>Shows</span>
+                </NavLink>
+              )}
+            </div>
+          )}
+          <div>
+            {searchItem === ""
+              ? heading
+              : `Search Results: ${searchResult?.length || 0}`}
+          </div>
+        </div>
+        {
+          <motion.div
+            className={`mb-2 px-3 py-2`}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <AnimatePresence>
+              {currentMovies.length > 0
+                ? currentMovies
+                    .slice(0, visibleCardCount)
+                    .map((movie, index) => (
+                      <motion.div
+                        key={movie.id}
+                        id={movie.id}
+                        onClick={handleClick}
+                        data-type={movie.type}
+                        style={{
+                          backgroundImage: `url(${ImageURL?.url}${ImageURL?.sizes[5]}${movie.banner})`,
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                        }}
+                        className="relative bg-none w-full flex sm:mb-6 mb-3 sm:py-2 p-2 sm:px-3 sm:gap-x-3 rounded-lg cursor-pointer sm:shadow-md shadow-gray-600 min-h-30"
+                        ref={
+                          index === visibleCardCount - 1
+                            ? lastRenderedCard
+                            : index === 0
+                            ? firstRenderedCard
+                            : null
+                        }
+                        variants={itemVariants}
+                        whileHover={{
+                          scale: 1.02,
+                          transition: { duration: 0.2 },
+                        }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                      >
+                        <div
+                          className={`absolute z-0 bg-black/50 inset-0  duration-700 md:bg-none
                 transition-opacity rounded-lg`}
-                  ></div>
-                  <div className="flex z-10 gap-x-3 text-gray-200">
-                    <div className="flex z-10 gap-x-3 items-center justify-center ">
-                      <div className="md:min-w-30 md:w-30 md:h-45 sm:min-w-28 sm:w-28 sm:h-40 w-18 h-26 overflow-hidden rounded-lg bg-no-repeat bg-cover shadow-md shadow-black">
-                        <img
-                          loading="lazy"
-                          style={{ objectFit: "contain" }}
-                          src={`${ImageURL?.url}${ImageURL?.sizes[1]}${movie?.poster}`}
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div className="">
-                      <div className="sm:mb-4 ">
-                        <div className="font-bold md:text-xl sm:text-lg text-sm sm:mb-2">
-                          {movie.title}
+                        ></div>
+                        <div className="flex z-10 gap-x-3 text-gray-200">
+                          <div className="flex z-10 gap-x-3 items-center justify-center ">
+                            <div className="md:min-w-30 md:w-30 md:h-45 sm:min-w-28 sm:w-28 sm:h-40 w-18 h-26 overflow-hidden rounded-lg bg-no-repeat bg-cover shadow-md shadow-black">
+                              <img
+                                loading="lazy"
+                                style={{ objectFit: "contain" }}
+                                src={`${ImageURL?.url}${ImageURL?.sizes[1]}${movie?.poster}`}
+                                alt=""
+                              />
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="sm:mb-4 ">
+                              <div className="font-bold md:text-xl sm:text-lg text-sm sm:mb-2">
+                                {movie.title}
+                              </div>
+                              <span className="md:text-[16px] sm:text-sm text-xs  text-neutral-300">
+                                {movie.release_date}
+                              </span>
+                            </div>
+                            <p className="md:text-sm sm:text-xs text-[10px] ">
+                              {movie.overview.length > 170
+                                ? movie.overview.slice(0, 170) + "..."
+                                : movie.overview || "Overview Not Avialable."}
+                            </p>
+                          </div>
                         </div>
-                        <span className="md:text-[16px] sm:text-sm text-xs  text-neutral-300">
-                          {movie.release_date}
-                        </span>
-                      </div>
-                      <p className="md:text-sm sm:text-xs text-[10px] ">
-                        {movie.overview.length > 170
-                          ? movie.overview.slice(0, 170) + "..."
-                          : movie.overview || "Overview Not Avialable."}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <motion.div
-                className="min-h-[50vh] w-full  flex flex-col items-center justify-center gap-6 p-4"
-                variants={noMatchVariants}
-                initial="initial"
-                animate="animate"
-              >
-                <motion.div
-                  className=" text-8xl sm:text-9xl mb-4"
-                  variants={noMatchItemVariants}
-                  animate={{
-                    rotate: [0, 10, -10, 0],
-                    transition: {
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatType: "reverse",
-                    },
-                  }}
-                >
-                  🔍
-                </motion.div>
-                <motion.div
-                  className="text-center"
-                  variants={noMatchItemVariants}
-                >
-                  <h2 className=" text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-                    No Results Found
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-center">
-                    Try different keywords or check your spelling
-                  </p>
-                </motion.div>
-                <motion.div
-                  className="flex gap-4 mt-4"
-                  variants={noMatchItemVariants}
-                ></motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </div>
-  );
+                      </motion.div>
+                    ))
+                : searchItem != "" && (
+                    <motion.div
+                      className="min-h-[50vh] w-full  flex flex-col items-center justify-center gap-6 p-4"
+                      variants={noMatchVariants}
+                      initial="initial"
+                      animate="animate"
+                    >
+                      <motion.div
+                        className=" text-8xl sm:text-9xl mb-4"
+                        variants={noMatchItemVariants}
+                        animate={{
+                          rotate: [0, 10, -10, 0],
+                          transition: {
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                          },
+                        }}
+                      >
+                        🔍
+                      </motion.div>
+                      <motion.div
+                        className="text-center"
+                        variants={noMatchItemVariants}
+                      >
+                        <h2 className=" text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                          No Results Found
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-center">
+                          Try different keywords or check your spelling
+                        </p>
+                      </motion.div>
+                      <motion.div
+                        className="flex gap-4 mt-4"
+                        variants={noMatchItemVariants}
+                      ></motion.div>
+                    </motion.div>
+                  )}
+            </AnimatePresence>
+          </motion.div>
+        }
+      </div>
+    );
 };
 
 export default Movie_Sugesstions;

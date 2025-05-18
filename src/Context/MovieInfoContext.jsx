@@ -11,7 +11,7 @@ export function MoviesInfoProvider({ children }) {
   //*Effects
   useEffect(() => {
     sessionStorage.setItem("movieID", JSON.stringify(movieId));
-  }, [movieId]);
+  }, [movieId]);  
   return (
     <movieInfoContext.Provider
       value={{ movieId, setMovieId, isAllowed, setIsAllowed }}

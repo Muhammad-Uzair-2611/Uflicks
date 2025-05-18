@@ -5,7 +5,6 @@ const MoviesPage = () => {
   return (
     <>
       <Hero />
-     
       <Sliders />
       <div className="w-full my-2 tracking-widest sm:text-xl text-sm text-center">
         Use <span className="text-amber">Filter</span> to get more{" "}

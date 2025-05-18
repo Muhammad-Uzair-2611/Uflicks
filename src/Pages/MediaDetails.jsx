@@ -21,6 +21,7 @@ const MediaDetails = () => {
   const [ImageURL, setImageURL] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [openSeasonId, setOpenSeasonId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -77,6 +78,10 @@ const MediaDetails = () => {
       fetchData();
     }
   }, [isAllowed, id]);
+
+  const handleSeasonClick = (seasonId) => {
+    setOpenSeasonId(openSeasonId === seasonId ? null : seasonId);
+  };
 
   if (loading) {
     return (
@@ -240,7 +245,7 @@ const MediaDetails = () => {
                     <span>
                       {mediaInfo.budget
                         ? mediaInfo.budget || "Not Available"
-                        : mediaInfo.totalSeason.length}
+                        : mediaInfo.totalSeason?.length}
                     </span>
 
                     {"|"}
@@ -254,7 +259,7 @@ const MediaDetails = () => {
                     <span>
                       {mediaInfo.revenue
                         ? mediaInfo.revenue || "Not Available"
-                        : mediaInfo.lastRelease}
+                        : mediaInfo?.lastRelease}
                     </span>
 
                     {"|"}
@@ -292,52 +297,72 @@ const MediaDetails = () => {
                 All Seasons
               </h2>
             </div>
-            <div className="space-y-3 px-3 py-2 w-full my-3">
+            <div className="space-y-8 px-2 sm:px-4 py-4 sm:py-6 w-full">
               {mediaInfo.totalSeason.map((season, index) => (
-                
-                <div key={season.id} className="">
-                  <div className="w-full h-20 rounded-t-md flex justify-between items-center px-4 text-xl  bg-[#212527] shadow-md shadow-[#111213] cursor-pointer transition-transform ease-in hover:scale-101">
-                    <span>{season.name}</span>
-                    <span className="text-5xl ">
+                <div key={season.id} className="group">
+                  <div 
+                    onClick={() => handleSeasonClick(season.id)}
+                    className="w-full h-16 sm:h-20 md:h-24 rounded-t-lg flex justify-between items-center px-3 sm:px-4 md:px-6 text-base sm:text-lg md:text-xl bg-neutral-800/80 backdrop-blur-sm border border-neutral-700/50 shadow-lg shadow-black/20 cursor-pointer transition-all duration-300 hover:bg-neutral-700/80"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-4">
+                      <span className="text-amber-400 font-medium text-sm sm:text-base md:text-lg">
+                        {season.name}
+                      </span>
+                    </div>
+                    <span
+                      className={`text-2xl sm:text-3xl md:text-4xl text-amber-400 transition-transform duration-300 ${
+                        openSeasonId === season.id ? "rotate-180" : ""
+                      }`}
+                    >
                       <RiArrowDropDownLine />
                     </span>
                   </div>
                   <div
-                    className="flex gap-x-4 w-full py-8 px-5 shadow-b-sm shadow-black rounded-b-md bg-[#212527] 
-                  h-fit  "
+                    className={`flex flex-col md:flex-row gap-4 md:gap-6 w-full px-3 sm:px-4 md:px-6 rounded-b-lg bg-neutral-800/60 backdrop-blur-sm border-x border-b border-neutral-700/50 shadow-lg shadow-black/20 transition-all duration-300 ${
+                      openSeasonId === season.id
+                        ? "max-h-[2000px] opacity-100 py-4 sm:py-6"
+                        : "max-h-0 p-0 opacity-0 overflow-hidden"
+                    }`}
                   >
-                    <div className="h-full">
-                      <div
-                        id="poster"
-                        className="w-60 overflow-hidden h-95 shadow-sm shadow-gray-400 cursor-pointer"
-                      >
+                    <div className="flex-shrink-0 mx-auto md:mx-0">
+                      <div className="w-48 sm:w-56 md:w-64 h-72 sm:h-80 md:h-96 rounded-lg overflow-hidden shadow-xl shadow-black/30 transition-transform duration-300 hover:scale-105">
                         <img
-                          className="w-full h-full"
+                          className="w-full h-full object-cover"
                           src={`${ImageURL?.url}${ImageURL?.sizes[3]}${season.poster_path}`}
-                          alt=""
+                          alt={`${season.name} poster`}
                         />
                       </div>
                     </div>
-                    <div className="space-y-6 w-full ">
-                      <div className="md:text-2xl -space-x-1.5 font-semibold tracking-wider">
-                        <span>
+                    <div className="flex-1 space-y-4 sm:space-y-6">
+                      <div className="space-y-1 sm:space-y-2">
+                        <h3 className="text-xl sm:text-2xl font-semibold text-white tracking-wide">
                           {mediaInfo.title} {season.name}
-                        </span>{" "}
-                        <span className="text-[16px] text-neutral-300">
-                          ({season.air_date.split("-").slice(0, 1)})
-                        </span>
+                        </h3>
+                        <p className="text-amber-400/80 text-xs sm:text-sm">
+                          {season?.air_date?.split("-").slice(0, 1) ||
+                            "Release date not available"}
+                        </p>
                       </div>
-                      <div className="">
-                        {season.overview || "Not Available"}{" "}
+                      <div className="bg-neutral-900/50 p-3 sm:p-4 rounded-lg border border-neutral-700/50 min-h-[120px] sm:min-h-[160px]">
+                        <p className="text-neutral-300 leading-relaxed text-sm sm:text-base">
+                          {season.overview ||
+                            "No overview available for this season."}
+                        </p>
                       </div>
-                      <div className="w-full text-nowrap pr-3 flex justify-between items-center">
-                        <div>
-                          <span>Total Episodes - </span>
-                          <span>{season.episode_count}</span>
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 pt-3 sm:pt-4 border-t border-neutral-700/50">
+                        <div className="flex items-center gap-2">
+                          <span className="text-amber-400 text-sm sm:text-base">
+                            Total Episodes:
+                          </span>
+                          <span className="text-white font-medium text-sm sm:text-base">
+                            {season.episode_count}
+                          </span>
                         </div>
-                        <div>
-                          <span>Rating on TMBD - </span>
-                          <span>{season.vote_average}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-amber-400 text-sm sm:text-base">TMDB Rating:</span>
+                          <span className="text-white font-medium text-sm sm:text-base">
+                            {season.vote_average}
+                          </span>
                         </div>
                       </div>
                     </div>

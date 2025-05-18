@@ -32,10 +32,13 @@ const SimpleCarousel = () => {
     intervalRef.current = null;
   };
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     setIsAllowed(true);
-    const mediaType = e.currentTarget.dataset.type;
-    setMovieId({ id: topRated[currentIndex].id, type: mediaType });
+    console.log(topRated[currentIndex].type);
+    setMovieId({
+      id: topRated[currentIndex].id,
+      type: topRated[currentIndex].type,
+    });
     if (location) navigate(`/media/${topRated[currentIndex].id}`);
   };
 
@@ -75,7 +78,7 @@ const SimpleCarousel = () => {
 
   return (
     <div
-      className="w-full xl:h-[93%] lg:h-[75%] h-fit overflow-hidden relative cursor-pointer"
+      className="w-fit mb-5 border h-fit [&_*]:border overflow-hidden relative cursor-pointer"
       onMouseEnter={() => {
         stopAutoPlay();
         setIsHover(true);
@@ -109,7 +112,7 @@ const SimpleCarousel = () => {
               position: "relative",
               borderRadius: "10px",
             }}
-            className="sm:h-full h-50"
+            className="sm:h-fit h-50"
           >
             <img
               src={`${imageURL?.url}${imageURL?.banner_sizes?.[1]}${movie.banner}`}

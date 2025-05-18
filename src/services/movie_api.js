@@ -372,7 +372,7 @@ export const getFliteredMovies = async (genre, type) => {
     handleApiError(error);
   }
 };
-export const getFliteredShows = async (genre, type) => {
+export const  getFliteredShows = async (genre, type) => {
   try {
     const allShows = [];
     const totalPages = 9;
@@ -463,7 +463,7 @@ export const getShowDetails = async (id) => {
     rating: response.vote_average,
     vote: response.vote_count,
   };
-  console.log(showInfo);
+
   return showInfo;
 };
 export const getBackDropImages = async (id, type) => {

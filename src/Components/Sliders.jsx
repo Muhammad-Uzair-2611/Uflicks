@@ -221,7 +221,7 @@ const Sliders = () => {
           variants={loadingVariants}
           animate="animate"
         >
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
           <motion.p
             className="text-xl text-gray-600"
             animate={{ opacity: [0.5, 1, 0.5] }}
