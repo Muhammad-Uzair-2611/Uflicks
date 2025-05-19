@@ -121,167 +121,176 @@ const MediaDetails = () => {
   }
   return (
     <div className="relative">
-      <div className="relative">
+      <div className="relative space-y-5">
         <div className=" h-fit relative ">
-          <div className="backImage w-full h-[95%] absolute -z-10 ">
-            <div className={`absolute z-15 bg-black/40 inset-0 `}> </div>
+          <div className="backImage w-full h-full absolute -z-10 bg-black/30 lg:rounded-none rounded-lg  ">
+            <div
+              className={`absolute z-15 bg-black/40 inset-0 lg:block hidden`}
+            >
+              {" "}
+            </div>
             <img
-              className="w-full h-full "
+              className="w-full h-full lg:block hidden "
               src={`${ImageURL?.url}${ImageURL?.banner_sizes[3]}${mediaInfo.banner}`}
               alt=""
             />
           </div>
-          <div className="h-50 px-4 py-3">
+          <div className="md:h-30 h-20 px-4 py-3">
             <span
               onClick={() => navigate(-1)}
-              className="text-4xl cursor-pointer"
+              className="text-3xl sm:text-4xl cursor-pointer"
             >
               <IoArrowBack />
             </span>
           </div>
-          <div className="flex gap-x-8 mx-16">
-            <div className="z-10  h-fit flex flex-col items-center justify-center gap-y-5">
+          <div className="flex flex-col lg:flex-row gap-x-8 mx-4 sm:mx-8 lg:mx-16">
+            <div className="z-10 h-fit flex flex-col items-center justify-center gap-y-5 mb-5 lg:mb-0">
               <div
                 id="poster"
-                className="w-60 overflow-hidden h-95 shadow-sm shadow-gray-400 cursor-pointer"
+                className="w-40 sm:w-48 md:w-56 lg:w-60 overflow-hidden h-auto shadow-sm shadow-gray-400 cursor-pointer rounded-lg"
               >
                 <a href={mediaInfo.ticket} target="_blank">
                   <img
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                     src={`${ImageURL?.url}${ImageURL?.sizes[2]}${mediaInfo.poster}`}
                     alt=""
                   />
                 </a>
               </div>
-              <a href={mediaInfo.ticket || "/notFound "} target="_blank">
-                <button className="transition-all bg-amber-400 text-black py-2  font-semibold cursor-pointer px-5 rounded-sm hover:scale-102 translate-y-1 hover:translate-y-0 duration-400 hover:shadow-md  hover:shadow-amber-200">
+              <a
+                href={mediaInfo.ticket || "/notFound "}
+                target="_blank"
+                className="w-full sm:w-auto"
+              >
+                <button className="w-full transition-all bg-amber-400 text-black py-2.5 font-semibold cursor-pointer px-5 rounded-sm hover:scale-102 translate-y-1 hover:translate-y-0 duration-400 hover:shadow-md hover:shadow-amber-200 text-sm sm:text-base">
                   Visit Official Site
                 </button>
               </a>
             </div>
-            <div className="Info mb-20">
-              <div className="mb-8">
-                <div className="md:text-2xl -space-x-1.5 font-semibold tracking-wider">
+            <div className="Info mb-10 lg:mb-20 flex-1">
+              <div className="mb-6 sm:mb-8">
+                <div className="text-xl sm:text-2xl -space-x-1.5 font-semibold tracking-wider">
                   <span>{mediaInfo.title}</span>{" "}
-                  <span className="text-[16px] text-neutral-300">
+                  <span className="text-[14px] sm:text-[16px] text-neutral-300">
                     ({mediaInfo.release.split("-").slice(0, 1)})
                   </span>
                 </div>
-                <div className="py-2 text-amber-400 tracking-wide">
+                <div className="py-2 text-amber-400 tracking-wide text-sm sm:text-base">
                   {mediaInfo.tagline || "A story worth watching."}
                 </div>
               </div>
               <div className="space-y-4">
                 <div
-                  className="border-y backdrop-blur-xs bg-black/40 border-white rounded-md  px-2 w-full text-sm gap-x-4 flex items-center shrink-0 flex-wrap py-3
+                  className="border-y backdrop-blur-xs bg-black/40 border-white rounded-md px-3 sm:px-4 w-full text-xs sm:text-sm gap-x-4 flex items-center shrink-0 flex-wrap py-4
           [&_h2]:text-neutral-300 [&>div]:flex [&>div]:gap-x-2 [&>div]:text-nowrap [&>div]:flex-wrap"
                 >
-                  <div className="items-center [&>p]:text-amber-300">
-                    <h2 className="">Genres - </h2>
-                    {mediaInfo.genres.map((genre, index) => (
-                      <p key={index}>{genre}</p>
-                    ))}
-                    {"|"}
-                    <h2 className="">Release - </h2>
-                    <span>{mediaInfo.release}</span>
-                    {"|"}
-                    <h2 className="">Production Companies - </h2>
-                    {mediaInfo.productionCompanies.length > 0
-                      ? mediaInfo.productionCompanies.map((comp, index) => (
-                          <span key={index}>{`${comp} ${
-                            index != mediaInfo.productionCompanies.length - 1
-                              ? ","
-                              : ""
-                          }`}</span>
-                        ))
-                      : "Not Mentioned "}
-                    {"|"}
-                    <h2 className="">Status - </h2>
-                    <span>{mediaInfo.status}</span>
-                    {"|"}
-                    <h2 className="">Languages - </h2>
-                    {mediaInfo.spoken_languages.map((lang, index) => (
-                      <span key={index}>{`${lang} ${
-                        index != mediaInfo.spoken_languages.length - 1
-                          ? ","
-                          : ""
-                      }`}</span>
-                    ))}
-                    {"|"}
-
-                    <h2 className="">Type - </h2>
-                    <span>
-                      {mediaInfo.type
-                        ? mediaInfo.type
-                        : id.type === "movie"
-                        ? "Movie"
-                        : "Show"}
-                    </span>
+                  <div className="items-center [&>p]:text-amber-300 space-y-2 sm:space-y-0">
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Genres - </h2>
+                      {mediaInfo.genres.map((genre, index) => (
+                        <p key={index}>{genre}</p>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Release - </h2>
+                      <span>{mediaInfo.release}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Production Companies - </h2>
+                      {mediaInfo.productionCompanies.length > 0
+                        ? mediaInfo.productionCompanies.map((comp, index) => (
+                            <span key={index}>{`${comp} ${
+                              index != mediaInfo.productionCompanies.length - 1
+                                ? ","
+                                : ""
+                            }`}</span>
+                          ))
+                        : "Not Mentioned "}
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Status - </h2>
+                      <span>{mediaInfo.status}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Languages - </h2>
+                      {mediaInfo.spoken_languages.map((lang, index) => (
+                        <span key={index}>{`${lang} ${
+                          index != mediaInfo.spoken_languages.length - 1
+                            ? ","
+                            : ""
+                        }`}</span>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Type - </h2>
+                      <span>
+                        {mediaInfo.type
+                          ? mediaInfo.type
+                          : id.type === "movie"
+                          ? "Movie"
+                          : "Show"}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <div
-                  className="border-y backdrop-blur-xs bg-black/40 px-2 border-white rounded-md w-full text-sm gap-x-4 flex items-center shrink-0 flex-wrap py-3
-          [&_h2]:text-neutral-300 [&>div]:flex [&>div]:gap-x-2"
+                  className="border-y backdrop-blur-xs bg-black/40 px-3 sm:px-4 border-white rounded-md w-full text-xs sm:text-sm gap-x-4 flex items-center shrink-0 flex-wrap py-4
+          [&_h2]:text-neutral-300 [&>div]:flex [&>div]:gap-x-2  [&>div]:lg:flex-row  [&>div]flex-col"
                 >
-                  <div>
-                    <h2 className="">
-                      {mediaInfo.numofEpisode
-                        ? "Total Episodes -"
-                        : "Run Time - "}{" "}
-                    </h2>
-                    <span>
-                      {mediaInfo.runtime
-                        ? `${mediaInfo.runtime} Minutes`
-                        : `${mediaInfo.numofEpisode}`}
-                    </span>
-                    {"|"}
-                    <h2 className="">
-                      {" "}
-                      {mediaInfo.totalSeason
-                        ? "Total Seasons -"
-                        : "Budget - "}{" "}
-                    </h2>
-                    <span>
-                      {mediaInfo.budget
-                        ? mediaInfo.budget || "Not Available"
-                        : mediaInfo.totalSeason?.length}
-                    </span>
-
-                    {"|"}
-
-                    <h2 className="">
-                      {" "}
-                      {mediaInfo.lastRelease
-                        ? "Last Release -"
-                        : "Revenue - "}{" "}
-                    </h2>
-                    <span>
-                      {mediaInfo.revenue
-                        ? mediaInfo.revenue || "Not Available"
-                        : mediaInfo?.lastRelease}
-                    </span>
-
-                    {"|"}
-                  </div>
-                  <div>
-                    <h2 className="">Rating on TMBD - </h2>
-                    <span>{JSON.stringify(mediaInfo.rating).slice(0, 3)}</span>
-                    {"|"}
-                  </div>
-                  <div>
-                    <h2 className="">Vote Count - </h2>
-                    <span>{mediaInfo.vote}</span>
+                  <div className="space-y-2 sm:space-y-0 w-full">
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">
+                        {mediaInfo.numofEpisode
+                          ? "Total Episodes "
+                          : "Run Time  "}{" "}
+                      </h2>
+                      <span>
+                        {mediaInfo.runtime
+                          ? `${mediaInfo.runtime} Minutes`
+                          : `${mediaInfo.numofEpisode}`}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">
+                        {mediaInfo.totalSeason ? "Total Seasons " : "Budget "}{" "}
+                      </h2>
+                      <span>
+                        {mediaInfo.budget
+                          ? mediaInfo.budget || "Not Available"
+                          : mediaInfo.totalSeason?.length}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">
+                        {mediaInfo.lastRelease ? "Last Release " : "Revenue  "}{" "}
+                      </h2>
+                      <span>
+                        {mediaInfo.revenue
+                          ? mediaInfo.revenue || "Not Available"
+                          : mediaInfo?.lastRelease}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">TMBD Rating </h2>
+                      <span>
+                        {JSON.stringify(mediaInfo.rating).slice(0, 3)}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-2">
+                      <h2 className="">Vote Count </h2>
+                      <span>{mediaInfo.vote}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex gap-2">
                     <div className="w-1 h-6 bg-amber-400 rounded-full"></div>
-                    <h2 className="text-xl font-semibold text-amber-400 tracking-wide">
+                    <h2 className="text-lg sm:text-xl font-semibold text-amber-400 tracking-wide">
                       Overview
                     </h2>
                   </div>
-                  <div className="backdrop-blur-xs bg-black/40 p-6 h-fit border-y  flex flex-col items-start gap-y-4 justify-center rounded-md w-full">
+                  <div className="backdrop-blur-xs bg-black/40 p-4 sm:p-6 h-fit border-y flex flex-col items-start gap-y-4 justify-center rounded-md w-full text-sm sm:text-base leading-relaxed">
                     {mediaInfo.overview}
                   </div>
                 </div>
@@ -300,7 +309,7 @@ const MediaDetails = () => {
             <div className="space-y-8 px-2 sm:px-4 py-4 sm:py-6 w-full">
               {mediaInfo.totalSeason.map((season, index) => (
                 <div key={season.id} className="group">
-                  <div 
+                  <div
                     onClick={() => handleSeasonClick(season.id)}
                     className="w-full h-16 sm:h-20 md:h-24 rounded-t-lg flex justify-between items-center px-3 sm:px-4 md:px-6 text-base sm:text-lg md:text-xl bg-neutral-800/80 backdrop-blur-sm border border-neutral-700/50 shadow-lg shadow-black/20 cursor-pointer transition-all duration-300 hover:bg-neutral-700/80"
                   >
@@ -359,7 +368,9 @@ const MediaDetails = () => {
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-amber-400 text-sm sm:text-base">TMDB Rating:</span>
+                          <span className="text-amber-400 text-sm sm:text-base">
+                            TMDB Rating:
+                          </span>
                           <span className="text-white font-medium text-sm sm:text-base">
                             {season.vote_average}
                           </span>
@@ -375,21 +386,21 @@ const MediaDetails = () => {
         <div className="space-y-4">
           <div className="flex gap-2 px-4">
             <div className="w-1 h-6 bg-amber-400 rounded-full"></div>
-            <h2 className="text-3xl tracking-widest font-semibold text-white ">
+            <h2 className="text-2xl sm:text-3xl tracking-widest font-semibold text-white">
               Photos
             </h2>
           </div>
           <div className="w-full h-full">
-            <div className="flex shrink-0 mb-10 flex-wrap gap-x-4 gap-y-5 w-full items-center px-5 h-fit">
+            <div className="flex shrink-0 mb-10 flex-wrap gap-x-4 gap-y-5 w-full items-center px-4 sm:px-5 h-fit">
               {sceneShots.map((path, index) =>
                 index <= 5 ? (
                   <div
                     key={index}
-                    className="cursor-pointer w-fit h-fit rounded-md overflow-hidden"
+                    className="cursor-pointer w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.5rem)] lg:w-[calc(50%-0.5rem)] aspect-[16/9] rounded-md overflow-hidden"
                   >
                     <img
-                      className="w-full1 h-full object-cover hover:scale-105 transition-transform duration-300"
-                      src={`${ImageURL?.url}${ImageURL?.banner_sizes[0]}${path}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      src={`${ImageURL?.url}${ImageURL?.banner_sizes[1]}${path}`}
                       alt={`Photo-${index}`}
                     />
                   </div>
@@ -399,9 +410,9 @@ const MediaDetails = () => {
                       setShowGallery(true);
                     }}
                     key={index}
-                    className="cursor-pointer w-fit h-fit  hover:scale-105 transition-transform duration-300 rounded-md overflow-hidden relative"
+                    className="cursor-pointer w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(50%-0.5rem)] lg:w-[calc(50%-0.5rem)] aspect-[16/9] hover:scale-105 transition-transform duration-300 rounded-md overflow-hidden relative"
                   >
-                    <div className="absolute w-full h-full bg-black/60 backdrop-blur-xs z-10 text-5xl flex items-center justify-center">
+                    <div className="absolute w-full h-full bg-black/60 backdrop-blur-xs z-10 text-4xl sm:text-5xl md:text-6xl flex items-center justify-center">
                       <span>{`+${sceneShots.length}`}</span>
                     </div>
                     <img

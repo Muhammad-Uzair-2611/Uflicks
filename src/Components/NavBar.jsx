@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
 import { FaSkull, FaMap } from "react-icons/fa";
@@ -9,9 +10,15 @@ import { GiCrossedSwords, GiMonoWheelRobot } from "react-icons/gi";
 import { LuTv } from "react-icons/lu";
 import { FaMasksTheater } from "react-icons/fa6";
 import Searchbar from "./Searchbar";
-import { getMovieDetails} from "../services/movie_api";
+import { getMovieDetails } from "../services/movie_api";
 
 const NavBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="z-50 sm:sticky top-0 left-0 bg-[#181A1B] w-full py-2 h-16 px-5 flex justify-between items-center">
       <div className="logo">
@@ -29,13 +36,19 @@ const NavBar = () => {
         <div className="hidden md:block">
           <Searchbar />
         </div>
-        <span className="md:hidden">
+        <span className="md:hidden cursor-pointer" onClick={toggleMenu}>
           <GiHamburgerMenu />
         </span>
       </div>
-      <div className=" hidden bg-black shadow-lg shadow-neutral-400 absolute w-70 h-330 top-0 right-0 z-30  p-4 space-y-5">
-        <div className="w-full text-2xl  flex justify-end">
-          <RxCross2 />
+      <div
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } transition-all duration-300 ease-in-out bg-black shadow-lg shadow-neutral-400 absolute top-0 right-0 z-30 p-4 space-y-5 h-330 w-70`}
+      >
+        <div className="w-full text-2xl flex justify-end">
+          <span className="cursor-pointer" onClick={toggleMenu}>
+            <RxCross2 />
+          </span>
         </div>
         <div>
           <ul
@@ -44,40 +57,94 @@ const NavBar = () => {
             [&>li>span]:text-[17px] [&>li]:hover:bg-neutral-600"
           >
             <li>
-              <HiHome />
-              <span>Home</span>
+              <Link
+                to="/"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <HiHome />
+                <span>Home</span>
+              </Link>
             </li>
             <li>
-              <MdMovie />
-              <span>Movies</span>
+              <Link
+                to="/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <MdMovie />
+                <span>Movies</span>
+              </Link>
             </li>
             <li>
-              <LuTv />
-              <span>TV Series</span>
+              <Link
+                to="/tv_series"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <LuTv />
+                <span>TV Series</span>
+              </Link>
             </li>
             <li>
-              <PiFilmReel />
-              <span>Animation</span>
+              <Link
+                to="/animations/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <PiFilmReel />
+                <span>Animation</span>
+              </Link>
             </li>
             <li>
-              <FaSkull />
-              <span>Horror</span>
+              <Link
+                to="/horror/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <FaSkull />
+                <span>Horror</span>
+              </Link>
             </li>
             <li>
-              <GiCrossedSwords />
-              <span>Action</span>
+              <Link
+                to="/action/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <GiCrossedSwords />
+                <span>Action</span>
+              </Link>
             </li>
             <li>
-              <FaMasksTheater />
-              <span>Drama</span>
+              <Link
+                to="/drama/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <FaMasksTheater />
+                <span>Drama</span>
+              </Link>
             </li>
             <li>
-              <FaMap />
-              <span>Adventure</span>
+              <Link
+                to="/adventure/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <FaMap />
+                <span>Adventure</span>
+              </Link>
             </li>
             <li>
-              <GiMonoWheelRobot />
-              <span>Sci-Fi</span>
+              <Link
+                to="/comedy/movies"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <GiMonoWheelRobot />
+                <span>Comedy</span>
+              </Link>
             </li>
           </ul>
         </div>

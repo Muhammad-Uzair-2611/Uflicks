@@ -26,7 +26,7 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { setIsAllowed, isAllowed, setMovieId } = useMovieInfo();
-  const [visibleCardCount, setVisibleCardCount] = useState(5);
+  const [visibleCardCount, setVisibleCardCount] = useState(10);
   const [category, setCategory] = useState("");
   const firstRenderedCard = useRef(null);
   const lastRenderedCard = useRef(null);
@@ -108,13 +108,13 @@ const CategoryPage = () => {
     const lastCardObserver = new IntersectionObserver((entries) => {
       const entry1 = entries[0];
       if (entry1.isIntersecting) {
-        setVisibleCardCount((prev) => prev + 5);
+        setVisibleCardCount((prev) => prev + 8);
       }
     });
     const firstCardObserver = new IntersectionObserver((entries) => {
       const entry1 = entries[0];
       if (entry1.isIntersecting) {
-        setVisibleCardCount(5);
+        setVisibleCardCount(10) ;
       }
     });
 
@@ -129,7 +129,7 @@ const CategoryPage = () => {
         lastCardObserver.unobserve(lastRenderedCard.current);
       }
     };
-  }, [visibleCardCount, data.length]);
+  }, [visibleCardCount, data]);
 
   //*Functions
   const handleClick = (e) => {
@@ -198,28 +198,31 @@ const CategoryPage = () => {
       </div>
     );
   }
+  if (loading) {
+    return (
+      <div className=" min-h-screen min-w-screen  flex items-center justify-center">
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          variants={loadingVariants}
+          animate="animate"
+        >
+          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+          <motion.p
+            className="text-xl text-gray-600"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            Loading...
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full px-3">
       <Sidebar />
-      {loading ? (
-        <div className=" min-h-screen min-w-220  flex items-center justify-center">
-          <motion.div
-            className="flex flex-col items-center gap-4"
-            variants={loadingVariants}
-            animate="animate"
-          >
-            <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-            <motion.p
-              className="text-xl text-gray-600"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              Loading...
-            </motion.p>
-          </motion.div>
-        </div>
-      ) : (
+      {
         <div className="w-full h-full ">
           <div
             className="space-x-6 sm:text-xl  px-3  py-3 [&>a]:cursor-pointer [&_span]:text-[#f3b00c] 
@@ -253,7 +256,8 @@ const CategoryPage = () => {
           </div>
           <AnimatePresence>
             <motion.div
-              className="h-[80vh] overflow-y-scroll sm:px-3  px-1"
+            
+              className="sm:h-[80vh] overflow-x-hidden h-[68vh] scrollable-container overflow-y-scroll sm:px-3  px-1"
               data-scroll-reset
               variants={containerVariants}
               initial="hidden"
@@ -264,7 +268,15 @@ const CategoryPage = () => {
                   <motion.div
                     key={movie.id}
                     id={movie.id}
+                    onClick={handleClick}
                     data-type={movie.type}
+                    style={{
+                      backgroundImage: `url(${ImageURL?.url}${ImageURL?.sizes[5]}${movie.banner})`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                    }}
+                    className="relative bg-none w-full flex sm:mb-6 mb-3 sm:py-2 p-2 sm:px-3 sm:gap-x-3 rounded-lg cursor-pointer sm:shadow-md shadow-gray-600 min-h-30"
                     ref={
                       index === visibleCardCount - 1
                         ? lastRenderedCard
@@ -272,44 +284,41 @@ const CategoryPage = () => {
                         ? firstRenderedCard
                         : null
                     }
-                    onClick={handleClick}
-                    style={{
-                      backgroundImage: `url(${ImageURL.url}${ImageURL.sizes[4]}${movie.banner})`,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                    }}
-                    className={`relative min-h-40 w-full flex my-3 py-3 px-3 rounded-lg cursor-pointer h-fit`}
                     variants={itemVariants}
-                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 },
+                    }}
                     exit={{ opacity: 0, scale: 0.8 }}
                   >
                     <div
-                      className={`absolute z-0 bg-black/30 inset-0  duration-700 md:bg-none
-                transition-opacity`}
-                    />
+                      className={`absolute z-0 bg-black/50 inset-0  duration-700 md:bg-none
+          transition-opacity rounded-lg`}
+                    ></div>
                     <div className="flex z-10 gap-x-3 text-gray-200">
-                      <div className="w-fit h-full flex items-center">
-                        <div className="md:min-w-[7.5rem] md:w-[7.5rem] md:h-[11.25rem] sm:min-w-[7rem] sm:w-[7rem] sm:h-[10rem] w-[6.25rem] h-[8rem] rounded-lg shadow-md shadow-black overflow-hidden ">
+                      <div className="flex z-10 gap-x-3 items-center justify-center ">
+                        <div className="md:min-w-30 md:w-30 md:h-45 sm:min-w-28 sm:w-28 sm:h-40 w-18 h-26 overflow-hidden rounded-lg bg-no-repeat bg-cover shadow-md shadow-black">
                           <img
                             loading="lazy"
-                            src={`${ImageURL.url}${ImageURL.sizes[1]}${movie.poster}`}
+                            style={{ objectFit: "contain" }}
+                            src={`${ImageURL?.url}${ImageURL?.sizes[1]}${movie?.poster}`}
                             alt=""
-                            className="w-full h-full object-fill"
                           />
                         </div>
                       </div>
                       <div className="">
-                        <div className="mb-4">
-                          <div className="font-semibold md:text-xl sm:text-lg hidden sm:block mb-2">
+                        <div className="sm:mb-4 ">
+                          <div className="font-bold md:text-xl sm:text-lg text-sm sm:mb-2">
                             {movie.title}
                           </div>
-                          <span className="md:text-[16px] sm:text-sm hidden sm:block text-neutral-300">
+                          <span className="md:text-[16px] sm:text-sm text-xs  text-neutral-300">
                             {movie.release_date}
                           </span>
                         </div>
-                        <p className="md:text-sm sm:text-xs sm:block hidden">
-                          {movie.overview || "Overview not available."}
+                        <p className="md:text-sm sm:text-xs text-[10px] ">
+                          {movie.overview.length > 170
+                            ? movie.overview.slice(0, 170) + "..."
+                            : movie.overview || "Overview Not Avialable."}
                         </p>
                       </div>
                     </div>
@@ -318,7 +327,7 @@ const CategoryPage = () => {
             </motion.div>
           </AnimatePresence>
         </div>
-      )}
+      }
       <ScrollToTop />
     </div>
   );

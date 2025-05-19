@@ -44,7 +44,10 @@ const Movie_Sugesstions = () => {
 
   async function fetchFilteredContent(path, genreId) {
     if (path === "/search/shows") {
-      return await getFliteredShows(genreId || DEFAULT_SHOW_GENRES, "show");
+      return await getFliteredShows(
+        searchItem != "" ? searchItem : genreId || DEFAULT_SHOW_GENRES,
+        "show"
+      );
     }
     return await getFliteredMovies(genreId || DEFAULT_MOVIE_GENRES, "movie");
   }
@@ -53,6 +56,7 @@ const Movie_Sugesstions = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        document.body.style.overflow = "hidden";
         setIsAllowed(false);
         setLoading(true);
         setError(null);
@@ -95,6 +99,9 @@ const Movie_Sugesstions = () => {
       }
     }
     fetchData();
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, [location.pathname, filter.id]);
 
   useEffect(() => {
@@ -136,19 +143,27 @@ const Movie_Sugesstions = () => {
   useEffect(() => {
     if (visibleCardCount >= currentMovies.length) return;
 
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    };
+
     const lastCardObserver = new IntersectionObserver((entries) => {
-      const entry1 = entries[0];
-      if (entry1.isIntersecting) {
-        setVisibleCardCount((prev) => prev + 10);
+      const entry = entries[0];
+      if (entry.isIntersecting) {
+        setVisibleCardCount((prev) =>
+          Math.min(prev + 10, currentMovies.length)
+        );
       }
-    });
+    }, options);
 
     const firstCardObserver = new IntersectionObserver((entries) => {
-      const entry1 = entries[0];
-      if (entry1.isIntersecting) {
+      const entry = entries[0];
+      if (entry.isIntersecting && visibleCardCount > 10) {
         setVisibleCardCount(10);
       }
-    });
+    }, options);
 
     const lastCard = lastRenderedCard.current;
     const firstCard = firstRenderedCard.current;
@@ -301,8 +316,8 @@ const Movie_Sugesstions = () => {
     );
   } else
     return (
-      <div className="sm:mt-10 w-full flex flex-col items-center justify-center">
-        <div className="flex px-3 w-full items-center justify-between md:text-2xl sm:text-xl text-lg font-semibold">
+      <div className="sm:mt-4 w-full flex flex-col items-center justify-center">
+        <div className="flex sm:px-3 px-5 w-full items-center justify-between md:text-2xl sm:text-xl text-lg font-semibold">
           {currentMovies.length > 0 && searchItem == "" && (
             <div
               className="space-x-6 sm:text-xl text-sm py-3 [&>a]:cursor-pointer [&_span]:text-[#f3b00c] 
@@ -340,7 +355,7 @@ const Movie_Sugesstions = () => {
         </div>
         {
           <motion.div
-            className={`mb-2 px-3 py-2`}
+            className={`mb-2 px-3 py-2 sm:h-[80vh] w-full overflow-x-hidden h-[68vh] scrollable-container overflow-y-scroll `}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -411,7 +426,7 @@ const Movie_Sugesstions = () => {
                     ))
                 : searchItem != "" && (
                     <motion.div
-                      className="min-h-[50vh] w-full  flex flex-col items-center justify-center gap-6 p-4"
+                      className="min-h-[50vh] border sm:mt-10 mt-0 w-full  flex flex-col items-center justify-center gap-6 p-4"
                       variants={noMatchVariants}
                       initial="initial"
                       animate="animate"

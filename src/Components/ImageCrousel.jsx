@@ -78,7 +78,7 @@ const SimpleCarousel = () => {
 
   return (
     <div
-      className="w-fit mb-5 border h-fit [&_*]:border overflow-hidden relative cursor-pointer"
+      className="w-fit mb-5 overflow-hidden relative cursor-pointer"
       onMouseEnter={() => {
         stopAutoPlay();
         setIsHover(true);

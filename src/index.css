@@ -73,14 +73,11 @@ body {
   background-color: #777;
 }
 
-
-
 /* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #555 #1e1e1e;
 }
-
 
 /* Performance optimizations */
 * {
@@ -100,4 +97,17 @@ img {
 }
 .bg-amber {
   background-color: #f3b00c;
+}
+
+@media (max-width: 768px) {
+  .scrollable-container {
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollable-container::-webkit-scrollbar {
+    overflow-y: scroll;
+    display: none; /* Chrome, Safari, Opera */
+  }
 }

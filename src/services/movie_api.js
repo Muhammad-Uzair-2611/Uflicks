@@ -252,26 +252,40 @@ export const getPopularShow = async () => {
 
 export const getSearchResult = async (query) => {
   try {
-    const [fetch, fetch2] = await Promise.all([
-      axios.get(`${BASE_URL}${SearchMovie_URL}${query}`),
-      axios.get(`${BASE_URL}${SearchShow_URL}${query}`),
-    ]);
+    const allResult = [];
+    const totalPages =5;
+    const seenIds = new Set(); // Track unique IDs
 
-    const response = [...fetch.data.results, ...fetch2.data.results];
+    for (let page = 1; page <= totalPages; page++) {
+      const [fetch, fetch2] = await Promise.all([
+        axios.get(`${BASE_URL}${SearchMovie_URL}${query}&page=${page}`),
+        axios.get(`${BASE_URL}${SearchShow_URL}${query}&page=${page}`),
+      ]);
 
-    return response
-      .filter(
-        (movie) => movie.poster_path != null && movie.backdrop_path != null
-      )
-      .map((movie) => ({
-        id: movie.id,
-        title: movie.name ? movie.name : movie.title,
-        release_date: movie.first_air_date || movie.release_date,
-        banner: movie.backdrop_path,
-        poster: movie.poster_path,
-        overview: movie.overview,
-        type: movie.name ? "show" : "movie",
-      }));
+      const response = [...fetch.data.results, ...fetch2.data.results];
+
+      const data = response
+        .filter(
+          (movie) =>
+            movie.poster_path != null &&
+            movie.backdrop_path != null &&
+            !seenIds.has(movie.id) // Only include if ID hasn't been seen before
+        )
+        .map((movie) => {
+          seenIds.add(movie.id); // Add ID to seen set
+          return {
+            id: movie.id,
+            title: movie.name ? movie.name : movie.title,
+            release_date: movie.first_air_date || movie.release_date,
+            banner: movie.backdrop_path,
+            poster: movie.poster_path,
+            overview: movie.overview,
+            type: movie.name ? "show" : "movie",
+          };
+        });
+      allResult.push(...data);
+    }
+    return allResult;
   } catch (error) {
     handleApiError(error);
   }
@@ -372,7 +386,7 @@ export const getFliteredMovies = async (genre, type) => {
     handleApiError(error);
   }
 };
-export const  getFliteredShows = async (genre, type) => {
+export const getFliteredShows = async (genre, type) => {
   try {
     const allShows = [];
     const totalPages = 9;
