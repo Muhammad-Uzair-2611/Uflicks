@@ -13,11 +13,11 @@ const Layout = () => {
   const location = useLocation()
   const hideSearNav = matches.some((match) => match.handle?.hide_navbar);
 
-useEffect(() => {
-  if (isFocus && !location.pathname.includes("/search")) {
-    navigate("/search/movies");
-  }
-}, [isFocus, navigate, location.pathname]);
+// useEffect(() => {
+//   if (isFocus && !location.pathname.includes("/search")) {
+//     navigate("/search/movies");
+//   }
+// }, [isFocus, navigate, location.pathname]);
 
 
   return (

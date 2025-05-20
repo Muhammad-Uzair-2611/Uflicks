@@ -66,8 +66,7 @@ const Searchbar = () => {
   };
   const handleClick = async () => {
     if (isFocus != true) {
-      // navigate("/search/movies");
-
+      navigate("/search/movies");
       setSearchItem("");
       Search_Ref.current?.focus();
     } else {
@@ -83,6 +82,7 @@ const Searchbar = () => {
     const div = e.target.closest(".genresName");
     if (e.target.id) {
       setSearchItem("");
+      navigate("/search/movies");
       setIsFocus(true);
       setFilter({
         id: Number(e.target.id),
@@ -146,6 +146,7 @@ const Searchbar = () => {
           onChange={handleSearch}
           onFocus={() => {
             setIsFocus(true);
+            navigate("/search/movies");
             setShowFilters(false);
           }}
           className="w-full outline-0 placeholder:text-xs pt-1 text-sm"
@@ -168,10 +169,10 @@ const Searchbar = () => {
             ref={filterDivRef}
             className="h-fit w-[90vw] sm:w-[80vw] md:w-[60vw] lg:w-[40vw] xl:w-[30vw] shadow-sm shadow-gray-400 bg-neutral-950 fixed sm:top-[calc(2.2%+0.5rem)] top-[calc(7.5%+0.5rem)] right-0 sm:right-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 rounded-md p-3 z-60"
             style={{
-              transform: 'translateX(-50%)',
-              left: '50%',
-              maxHeight: '80vh',
-              overflowY: 'auto'
+              transform: "translateX(-50%)",
+              left: "50%",
+              maxHeight: "80vh",
+              overflowY: "auto",
             }}
           >
             {genres

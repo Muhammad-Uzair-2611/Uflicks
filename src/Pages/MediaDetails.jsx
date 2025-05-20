@@ -273,7 +273,7 @@ const MediaDetails = () => {
                         {mediaInfo.revenue
                           ? mediaInfo.revenue || "Not Available"
                           : mediaInfo?.lastRelease}
-                      </span>
+                      </span> 
                     </div>
                     <div className="flex flex-wrap gap-x-2">
                       <h2 className="">TMBD Rating </h2>
