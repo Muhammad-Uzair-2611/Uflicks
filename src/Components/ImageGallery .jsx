@@ -27,11 +27,11 @@ const ImageGallery = ({ images, ImgSource, onClose }) => {
   }, []);
 
   return (
-    <div className=" py-3 h-screen backdrop-blur-xl w-full absolute inset-0 z-100 flex flex-col justify-between">
+    <div className=" py-3 h-screen backdrop-blur-xl w-full absolute overflow-hidden inset-0 z-100 flex flex-col justify-between">
       <div className="header flex justify-between items-center px-3">
         <button
           onClick={onClose}
-          className="bg-black/50 hover:bg-black/90 rounded-md py-1 px-3 cursor-pointer z-10 flex items-center text-lg tracking-wide transition-colors"
+          className="bg-black/50 hover:bg-black/90 rounded-md py-1 px-3 cursor-pointer z-10 flex items-center sm:text-lg tracking-wide transition-colors"
         >
           <RxCross2 className="text-xl" />
           <span className="pt-1">Close</span>
@@ -40,11 +40,11 @@ const ImageGallery = ({ images, ImgSource, onClose }) => {
           {current + 1} of {images.length}
         </div>
       </div>
-      <div className="bg-black/40 px-2 w-full h-60 flex items-center justify-between">
+      <div className="bg-black/40 px-2 w-full h-60 flex items-center justify-between gap-x-2">
         {images.length > 1 && (
           <button
             onClick={goPrev}
-            className="bg-black/50 border-none text-white text-2xl rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-20 hover:bg-black/70 transition-colors rotate-z-180"
+            className="sm:bg-black/50 border-none text-white sm:text-2xl text-xl rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-20 hover:bg-black/70 transition-colors rotate-z-180"
             aria-label="Next image"
           >
             <FaArrowRight />
@@ -56,13 +56,15 @@ const ImageGallery = ({ images, ImgSource, onClose }) => {
             e.target.src = "./Default_banner.png";
           }}
           alt={`slide-${current}`}
-          className="w-full max-h-[70vh] object-contain sm:rounded-lg rounded-none shadow-2xl "
+          className="sm:w-[65%] w-[85%] max-h-[50vh] object-auto rounded-sm   shadow-2xl "
           loading="lazy"
+          width={1280}
+          height={720}
         />
         {images.length > 1 && (
           <button
             onClick={goNext}
-            className="bg-black/50 border-none text-white text-2xl rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-20 hover:bg-black/70 transition-colors"
+            className="sm:bg-black/50 border-none text-white sm:text-2xl text-xl rounded-full w-10 h-10 flex items-center justify-center cursor-pointer z-20 hover:bg-black/70 transition-colors"
             aria-label="Next image"
           >
             <FaArrowRight />

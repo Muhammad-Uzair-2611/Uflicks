@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useMovieInfo } from "../Context/MovieInfoContext";
 import { useNavigate } from "react-router-dom";
+
 const MovieCard = (props) => {
   //*Custom Hook
   const { setIsAllowed, setMovieId, movieId } = useMovieInfo();
@@ -20,17 +21,19 @@ const MovieCard = (props) => {
         onClick={handleClick}
         id={props.id}
         data-type={props.type}
-        className="md:w-35 md:h-52 overflow-hidden sm:w-30 sm:h-45 w-22 h-29 rounded-lg cursor-pointer sm:mb-3 mb-2  shadow-sm shadow-gray-500"
+        className="w-[120px] h-[180px] sm:w-[150px] sm:h-[225px] md:w-[180px] md:h-[270px] lg:w-[200px] lg:h-[300px] overflow-hidden rounded-lg cursor-pointer mb-2 shadow-sm shadow-gray-500"
       >
         <img
-          className="object-auto w-full h-full"
+          className="w-full h-full object-cover"
           loading="lazy"
           src={`${props.url}${props.size}${props.poster}`}
-          alt=""
+          alt={props.title}
+          width={props.size === "w342" ? 342 : 500}
+          height={props.size === "w342" ? 513 : 750}
         />
       </div>
 
-      <span className="font-semibold sm:text-xl text-sm ">
+      <span className="font-semibold text-sm sm:text-base md:text-lg">
         {props.title.length > 15
           ? props.title.slice(0, 15) + "..."
           : props.title}

@@ -9,6 +9,7 @@ import { PiFilmReel } from "react-icons/pi";
 import { GiCrossedSwords, GiMonoWheelRobot } from "react-icons/gi";
 import { LuTv } from "react-icons/lu";
 import { FaMasksTheater } from "react-icons/fa6";
+import { BsPerson } from "react-icons/bs";
 import Searchbar from "./Searchbar";
 import { getMovieDetails } from "../services/movie_api";
 
@@ -23,7 +24,7 @@ const NavBar = () => {
     <nav className="z-50 sm:sticky top-0 left-0 bg-[#181A1B] w-full py-2 h-16 px-5 flex justify-between items-center">
       <div className="logo">
         <a href="/">
-          <img className="sm:w-15 md:w-19 w-10" src="/Logo.png" alt="" />
+          <img className="sm:w-15 md:w-19 w-10" src="/Logo.png" alt="UFlicks Logo" width={76} height={76} />
         </a>
         {/* <button
           onClick={() => getMovieDetails(456)}
@@ -43,7 +44,7 @@ const NavBar = () => {
       <div
         className={`${
           isMenuOpen ? "block" : "hidden"
-        } transition-all duration-300 ease-in-out bg-black shadow-lg shadow-neutral-400 absolute top-0 right-0 z-30 p-4 space-y-5 h-330 w-70`}
+        } transition-all duration-300 ease-in-out bg-black shadow-lg shadow-neutral-400 absolute top-0 right-0 z-200 p-4 space-y-5 h-330 w-70`}
       >
         <div className="w-full text-2xl flex justify-end">
           <span className="cursor-pointer" onClick={toggleMenu}>
@@ -146,12 +147,25 @@ const NavBar = () => {
                 <span>Comedy</span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/about"
+                className="flex items-center gap-x-2 w-full"
+                onClick={toggleMenu}
+              >
+                <BsPerson />
+                <span>About</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
       <ul className="hidden md:flex gap-x-6 font-bold md:text-lg lg:text-xl [&>li]:hover:cursor-pointer ">
-        <li className="text-amber ">Favourite</li>
-        <li>About me </li>
+        <li>
+          <Link to="/about" className="hover:text-amber-400 transition-colors">
+            About
+          </Link>
+        </li>
       </ul>
     </nav>
   );

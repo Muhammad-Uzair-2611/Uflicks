@@ -24,7 +24,7 @@ useEffect(() => {
     <div className="container mx-auto">
       <ScrollToTop />
       {!hideSearNav && <NavBar />}
-      <div className="block md:hidden py-5">
+      <div className="block md:hidden py-3">
         <Searchbar />
       </div>
       <MoviesInfoProvider>

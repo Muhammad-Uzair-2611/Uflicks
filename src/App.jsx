@@ -12,7 +12,7 @@ function App() {
     <ErrorBoundary>
       <div>
         <Hero />
-        <Sliders />
+                <Sliders />
       </div>
     </ErrorBoundary>
   );

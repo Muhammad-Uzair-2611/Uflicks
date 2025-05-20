@@ -166,27 +166,31 @@ const Searchbar = () => {
             transition={{ duration: 0.5 }}
             onClick={handleFilterSelect}
             ref={filterDivRef}
-            className="h-fit sm:w-fit shadow-sm shadow-gray-400  bg-neutral-950 absolute sm:right-4 -right-2 sm:-bottom-58 -bottom-34 grid grid-cols-3 sm:gap-4  gap-x-2 gap-y-2 rounded-md sm:py-3 py-2 sm:px-4 px-2 [&>div]:flex sm:[&>div]:gap-x-2 [&>div]:gap-x-1 z-60 
-            [&>div>input]:cursor-pointer sm:[&>div]:text-lg [&>div]:text-[10px] 
-         [&>div]:items-center"
+            className="h-fit w-[90vw] sm:w-[80vw] md:w-[60vw] lg:w-[40vw] xl:w-[30vw] shadow-sm shadow-gray-400 bg-neutral-950 fixed sm:top-[calc(2.2%+0.5rem)] top-[calc(7.5%+0.5rem)] right-0 sm:right-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 rounded-md p-3 z-60"
+            style={{
+              transform: 'translateX(-50%)',
+              left: '50%',
+              maxHeight: '80vh',
+              overflowY: 'auto'
+            }}
           >
             {genres
               .filter((genre) => !ExcludedCategories.includes(genre.name))
               .map((genre) => (
                 <div
-                  className="genresName"
+                  className="genresName flex items-center gap-2 text-xs sm:text-sm md:text-base"
                   key={genre.id}
                   data-name={genre.name}
                 >
                   <input
-                    className="scale-80 md:scale-100"
+                    className="scale-80 md:scale-100 cursor-pointer"
                     type="radio"
                     checked={selectedGenre === genre.id}
                     onChange={() => setSelectedGenre(genre.id)}
                     id={genre.id}
                     name="option"
                   />
-                  <span className="w-fit text-nowrap">
+                  <span className="w-fit text-nowrap overflow-hidden text-ellipsis">
                     {genre.name == "Science Fiction" ? "Sci-Fi" : genre.name}
                   </span>
                 </div>

@@ -78,7 +78,7 @@ const SimpleCarousel = () => {
 
   return (
     <div
-      className="w-fit mb-5 overflow-hidden relative cursor-pointer"
+      className="w-fit mb-5 overflow-hidden  h-full relative cursor-pointer"
       onMouseEnter={() => {
         stopAutoPlay();
         setIsHover(true);
@@ -112,7 +112,7 @@ const SimpleCarousel = () => {
               position: "relative",
               borderRadius: "10px",
             }}
-            className="sm:h-fit h-50"
+            className="h-fit"
           >
             <img
               src={`${imageURL?.url}${imageURL?.banner_sizes?.[1]}${movie.banner}`}
@@ -136,11 +136,11 @@ const SimpleCarousel = () => {
         <div
           id={topRated[currentIndex].id}
           data-type={topRated[currentIndex].type}
-          className={`md:absolute z-10 md:flex lg:gap-x-4 md:gap-x-3 xl:top-1/3 xl:left-30 
+          className={`md:absolute z-10 md:flex  lg:gap-x-4 md:gap-x-3 xl:top-1/3 xl:left-30 
             md:top-1/4 md:left-10 text-white transition-all duration-500 opacity-100 sm:translate-y-4 w-full pb-3 ${
               isHover
-                ? "md:opacity-100 md:translate-y-0"
-                : "md:opacity-0 md:translate-y-4"
+                ? "md:opacity-0 md:translate-y-4"
+                : "md:opacity-100 md:translate-y-0"
             }`}
           onClick={handleClick}
         >

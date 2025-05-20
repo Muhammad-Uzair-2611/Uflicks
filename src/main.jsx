@@ -11,6 +11,7 @@ import Movie_Sugesstions from "./Pages/Movie_Sugesstions.jsx";
 import MoviesPage from "./Pages/MoviesPage.jsx";
 import CategoryPage from "./Pages/CategoryPage.jsx";
 import MediaDetails from "./Pages/MediaDetails.jsx";
+import AboutMe from "./Components/AboutMe.jsx";
 
 const categories = [
   "animations",
@@ -20,7 +21,7 @@ const categories = [
   "drama",
   "comedy",
 ];
-const types = ["movies", "shows"];
+const types = ["movies", "shows"];  
 
 const categoryRoutes = categories.flatMap((category) =>
   types.map((type) => ({
@@ -38,6 +39,10 @@ const routes = createBrowserRouter([
       {
         path: "",
         element: <App />,
+      },
+      {
+        path: "about",
+        element: <AboutMe />,
       },
       {
         path: "movies",

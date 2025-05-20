@@ -133,6 +133,8 @@ const MediaDetails = () => {
               className="w-full h-full lg:block hidden "
               src={`${ImageURL?.url}${ImageURL?.banner_sizes[3]}${mediaInfo.banner}`}
               alt=""
+              width={1920}
+              height={1080}
             />
           </div>
           <div className="md:h-30 h-20 px-4 py-3">
@@ -154,6 +156,8 @@ const MediaDetails = () => {
                     className="w-full h-full object-cover"
                     src={`${ImageURL?.url}${ImageURL?.sizes[2]}${mediaInfo.poster}`}
                     alt=""
+                    width={500}
+                    height={750}
                   />
                 </a>
               </div>
@@ -339,6 +343,8 @@ const MediaDetails = () => {
                           className="w-full h-full object-cover"
                           src={`${ImageURL?.url}${ImageURL?.sizes[3]}${season.poster_path}`}
                           alt={`${season.name} poster`}
+                          width={500}
+                          height={750}
                         />
                       </div>
                     </div>
@@ -402,6 +408,8 @@ const MediaDetails = () => {
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       src={`${ImageURL?.url}${ImageURL?.banner_sizes[1]}${path}`}
                       alt={`Photo-${index}`}
+                      width={1280}
+                      height={720}
                     />
                   </div>
                 ) : index == 6 ? (
@@ -419,6 +427,8 @@ const MediaDetails = () => {
                       className="w-full h-full object-cover"
                       src={`${ImageURL?.url}${ImageURL?.banner_sizes[0]}${path}`}
                       alt={`Photo-${index}`}
+                      width={1280}
+                      height={720}
                     />
                   </div>
                 ) : (

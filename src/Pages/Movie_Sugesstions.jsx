@@ -403,6 +403,8 @@ const Movie_Sugesstions = () => {
                                 style={{ objectFit: "contain" }}
                                 src={`${ImageURL?.url}${ImageURL?.sizes[1]}${movie?.poster}`}
                                 alt=""
+                                width={342}
+                                height={513}
                               />
                             </div>
                           </div>
