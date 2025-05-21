@@ -23,7 +23,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': ['@headlessui/react', '@heroicons/react'],
         },
       },
     },
@@ -36,6 +35,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', '@headlessui/react', '@heroicons/react'],
+    include: ['react', 'react-dom'],
   },
 });
