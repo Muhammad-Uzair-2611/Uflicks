@@ -428,7 +428,7 @@ const Movie_Sugesstions = () => {
                     ))
                 : searchItem != "" && (
                     <motion.div
-                      className="min-h-[50vh] border sm:mt-10 mt-0 w-full  flex flex-col items-center justify-center gap-6 p-4"
+                      className="min-h-[50vh] sm:mt-10 mt-0 w-full  flex flex-col items-center justify-center gap-6 p-4"
                       variants={noMatchVariants}
                       initial="initial"
                       animate="animate"
