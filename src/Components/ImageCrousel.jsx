@@ -16,6 +16,8 @@ const SimpleCarousel = () => {
   const [heading, setHeading] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef(null);
+  const touchStartXRef = useRef(0);
+  const touchDeltaXRef = useRef(0);
   const { setMovieId, setIsAllowed } = useMovieInfo();
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,6 +42,35 @@ const SimpleCarousel = () => {
       type: topRated[currentIndex].type,
     });
     if (location) navigate(`/media/${topRated[currentIndex].id}`);
+  };
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e) => {
+    stopAutoPlay();
+    if (e.touches && e.touches.length > 0) {
+      touchStartXRef.current = e.touches[0].clientX;
+      touchDeltaXRef.current = 0;
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const swipeThresholdPx = 50;
+    const delta = touchDeltaXRef.current;
+    if (Math.abs(delta) > swipeThresholdPx) {
+      setCurrentIndex((prev) => {
+        const isSwipeRight = delta > 0;
+        return isSwipeRight
+          ? (prev - 1 + topRated.length) % topRated.length
+          : (prev + 1) % topRated.length;
+      });
+    }
+    startAutoPlay();
   };
 
   //*Effects
@@ -78,7 +109,7 @@ const SimpleCarousel = () => {
 
   return (
     <div
-      className="w-fit mb-5 overflow-hidden  h-full relative cursor-pointer"
+      className="w-fit mb-5 overflow-hidden lg:h-150 relative cursor-pointer"
       onMouseEnter={() => {
         stopAutoPlay();
         setIsHover(true);
@@ -87,6 +118,9 @@ const SimpleCarousel = () => {
         startAutoPlay();
         setIsHover(false);
       }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="tracking-wider lg:text-lg md:text-[16px] text-sm mb-0.5">
         <span className="text-amber">Top Rated</span> {heading}

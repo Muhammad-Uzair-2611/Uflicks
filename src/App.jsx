@@ -5,14 +5,11 @@ import Sliders from "./Components/Sliders";
 import { useSearch } from "./Context/Searchcontext";
 
 function App() {
- 
-
- 
   return (
     <ErrorBoundary>
       <div>
         <Hero />
-                <Sliders />
+        <Sliders />
       </div>
     </ErrorBoundary>
   );

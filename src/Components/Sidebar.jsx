@@ -13,17 +13,17 @@ const Sidebar = () => {
   return (
     <div className={`md:block hidden h-full md:py-8 sm:py-4 py-3 `}>
       <ul
-        className="lg:space-y-6 md:space-y-3.5  sm:space-y-1 w-40 
+        className="lg:space-y-7 md:space-y-3.5  sm:space-y-1 w-60    
         [&>a]:flex 
         [&>a]:px-2 
         [&>a]:cursor-pointer 
         [&>a]:rounded-sm 
         [&>a>li]:gap-x-2 
-        [&>a>li]:text-lg
+        [&>a>li]:text-[22px]
         [&>a>li]:flex 
         [&>a>li]:items-center 
-        [&>a>li]:py-1
-        [&>a>li>span]:text-[17px] 
+        [&>a>li]:py-2
+        [&>a>li>span]:text-[22px] 
         [&>a>li>span]:h-5
         [&>a]:transition-all
         [&>a>li]:hover:scale-105"
