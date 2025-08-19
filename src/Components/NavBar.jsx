@@ -24,7 +24,13 @@ const NavBar = () => {
     <nav className="z-50 sm:sticky top-0 left-0 bg-[#181A1B] w-full py-2 h-16 px-5 flex justify-between items-center">
       <div className="logo">
         <a href="/">
-          <img className="sm:w-15 md:w-19 w-10" src="/Logo.png" alt="UFlicks Logo" width={76} height={76} />
+          <img
+            className="sm:w-15 md:w-17 w-10"
+            src="/Logo.png"
+            alt="UFlicks Logo"
+            width={76}
+            height={76}
+          />
         </a>
         {/* <button
           onClick={() => getMovieDetails(456)}
@@ -34,10 +40,10 @@ const NavBar = () => {
         </button> */}
       </div>
       <div className=" flex text-2xl mb-2 gap-x-5 ">
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Searchbar />
         </div>
-        <span className="md:hidden cursor-pointer" onClick={toggleMenu}>
+        <span className="lg:hidden cursor-pointer" onClick={toggleMenu}>
           <GiHamburgerMenu />
         </span>
       </div>
@@ -160,7 +166,7 @@ const NavBar = () => {
           </ul>
         </div>
       </div>
-      <ul className="hidden md:flex gap-x-6 font-bold md:text-lg lg:text-xl [&>li]:hover:cursor-pointer ">
+      <ul className="hidden lg:flex gap-x-6 font-bold md:text-lg lg:text-xl [&>li]:hover:cursor-pointer ">
         <li>
           <Link to="/about" className="hover:text-amber-400 transition-colors">
             About

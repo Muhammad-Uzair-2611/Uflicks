@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   const isCurrentSection = (path) => location.pathname.startsWith(path);
   return (
-    <div className={`md:block hidden h-full md:py-8 sm:py-4 py-3 `}>
+    <div className={`lg:block hidden h-full md:py-8 sm:py-4 py-3 `}>
       <ul
         className="lg:space-y-7 md:space-y-3.5  sm:space-y-1 w-60    
         [&>a]:flex 

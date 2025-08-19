@@ -1,7 +1,6 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import ImageCrousel from "./ImageCrousel";
-import Searchbar from "./Searchbar";
 
 const Hero = () => {
   return (
