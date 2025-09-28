@@ -2,7 +2,6 @@
 
 A modern, responsive movie and TV series discovery platform built with React and Vite. Discover trending content, explore different genres, and get detailed information about your favorite movies and shows.
 
-<img src="./public//Logo.png" alt="Logo" width="50" height="50" />
 
 ![UFlicks Preview](https://img.shields.io/badge/Status-Live-brightgreen) ![React](https://img.shields.io/badge/React-18.2.0-blue) ![Vite](https://img.shields.io/badge/Vite-6.1.1-purple) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-teal)
 
