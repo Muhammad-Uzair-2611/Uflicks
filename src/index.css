@@ -99,7 +99,8 @@ img {
   background-color: #f3b00c;
 }
 
-@media (max-width: 768px) {
+/* Responsive breakpoints */
+@media (max-width: 480px) {
   .scrollable-container {
     overflow-y: scroll;
     -ms-overflow-style: none; /* IE 10+ */
@@ -109,5 +110,40 @@ img {
   .scrollable-container::-webkit-scrollbar {
     overflow-y: scroll;
     display: none; /* Chrome, Safari, Opera */
+  }
+}
+
+/* Extra small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  body {
+    font-size: 17px;
   }
 }

@@ -266,19 +266,19 @@ const Sliders = () => {
     <>
       {/* //! Trending Movies */}
       <motion.div
-        className="lg:mt-5 mt-0 flex items-center space-x-2 sm:pr-5"
+        className="mt-3 lg:mt-5 flex items-center space-x-2 px-2 sm:px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="text-amber mr-1 md:pl-4 sm:pl-3 pl-2 sm:text-3xl text-xl w-fit  whitespace-nowrap ">
+        <span className="text-amber mr-1 text-lg sm:text-xl md:text-2xl lg:text-3xl w-fit whitespace-nowrap">
           {title_1[0]}
         </span>{" "}
-        <span className="text-white sm:text-3xl text-xl">{title_1[1]}</span>
-        <div className="w-full border h-0  border-neutral-800"></div>
+        <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">{title_1[1]}</span>
+        <div className="w-full border h-0 border-neutral-800"></div>
       </motion.div>
       <motion.div
-        className="h-fit sm:h-fit sm:py-0 sm:px-4 px-0 sm:mt-3 mt-0 items-center relative"
+        className="h-fit py-2 px-2 sm:px-4 mt-2 sm:mt-3 items-center relative"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -315,7 +315,7 @@ const Sliders = () => {
 
         <div
           ref={trending_Movie_crousel}
-          className="flex gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
+          className="flex gap-x-3 sm:gap-x-5 md:gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
         >
           <AnimatePresence>
             {trendng_Movies?.map((movie) => (
@@ -340,19 +340,19 @@ const Sliders = () => {
       </motion.div>
       {/* //! Playing Now */}
       <motion.div
-        className="mt-5 flex items-center space-x-2 sm:pr-5"
+        className="mt-4 lg:mt-5 flex items-center space-x-2 px-2 sm:px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="text-amber mr-1 md:pl-4 sm:pl-3 pl-2 sm:text-3xl text-xl w-fit  whitespace-nowrap ">
+        <span className="text-amber mr-1 text-lg sm:text-xl md:text-2xl lg:text-3xl w-fit whitespace-nowrap">
           {title_2[0]}
         </span>
-        <span className=" sm:text-3xl text-xl">{title_2[1]}</span>
-        <div className="w-full border h-0  border-neutral-800"></div>
+        <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">{title_2[1]}</span>
+        <div className="w-full border h-0 border-neutral-800"></div>
       </motion.div>
       <motion.div
-        className="h-fit sm:px-4 px-0 sm:mt-3 mt-0 items-center relative"
+        className="h-fit py-2 px-2 sm:px-4 mt-2 sm:mt-3 items-center relative"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -388,7 +388,7 @@ const Sliders = () => {
         </div>
         <div
           ref={now_Playing_crousel}
-          className="flex gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
+          className="flex gap-x-3 sm:gap-x-5 md:gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
         >
           <AnimatePresence>
             {now_Playing?.map((movie) => (
@@ -413,19 +413,19 @@ const Sliders = () => {
       </motion.div>
       {/* //! Today Airing */}
       <motion.div
-        className="mt-5 flex items-center space-x-2 md:pr-5"
+        className="mt-4 lg:mt-5 flex items-center space-x-2 px-2 sm:px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="text-amber mr-1 md:pl-4 sm:pl-3 pl-2 sm:text-3xl text-xl w-fit  whitespace-nowrap ">
+        <span className="text-amber mr-1 text-lg sm:text-xl md:text-2xl lg:text-3xl w-fit whitespace-nowrap">
           {title_3[0]}
         </span>{" "}
-        <span className="text-white sm:text-3xl text-xl">{title_3[1]}</span>
-        <div className="w-full border h-0  border-neutral-800"></div>
+        <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">{title_3[1]}</span>
+        <div className="w-full border h-0 border-neutral-800"></div>
       </motion.div>
       <motion.div
-        className="h-fit sm:h-fit sm:px-4 px-0 sm:mt-3  mt-0 sm:mb-10 relative"
+        className="h-fit py-2 px-2 sm:px-4 mt-2 sm:mt-3 mb-6 sm:mb-10 relative"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -461,7 +461,7 @@ const Sliders = () => {
         </div>
         <div
           ref={today_show_crousel}
-          className="flex gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
+          className="flex gap-x-3 sm:gap-x-5 md:gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
         >
           <AnimatePresence>
             {today_Shows.map((movie) => (
@@ -486,19 +486,19 @@ const Sliders = () => {
       </motion.div>
       {/* //! Popular Shoews*/}
       <motion.div
-        className="mt-5 flex items-center space-x-2 md:pr-5"
+        className="mt-4 lg:mt-5 flex items-center space-x-2 px-2 sm:px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <span className="text-amber mr-1 md:pl-4 sm:pl-3 pl-2 sm:text-3xl text-xl w-fit  whitespace-nowrap ">
+        <span className="text-amber mr-1 text-lg sm:text-xl md:text-2xl lg:text-3xl w-fit whitespace-nowrap">
           {title_4[0]}
         </span>{" "}
-        <span className="text-white sm:text-3xl text-xl">{title_4[1]}</span>
-        <div className="w-full border h-0  border-neutral-800"></div>
+        <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">{title_4[1]}</span>
+        <div className="w-full border h-0 border-neutral-800"></div>
       </motion.div>
       <motion.div
-        className="h-fit sm:h-fit sm:px-4 px-0 sm:mt-3  mt-0 sm:mb-10 relative"
+        className="h-fit py-2 px-2 sm:px-4 mt-2 sm:mt-3 mb-6 sm:mb-10 relative"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -534,7 +534,7 @@ const Sliders = () => {
         </div>
         <div
           ref={popular_show_crousel}
-          className="flex gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
+          className="flex gap-x-3 sm:gap-x-5 md:gap-x-7 overflow-x-scroll px-2 py-4 scrollbar-hide transition-all scroll-smooth"
         >
           <AnimatePresence>
             {popular_Shows.map((movie) => (

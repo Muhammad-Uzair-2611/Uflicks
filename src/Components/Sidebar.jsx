@@ -11,19 +11,19 @@ const Sidebar = () => {
 
   const isCurrentSection = (path) => location.pathname.startsWith(path);
   return (
-    <div className={`lg:block hidden h-full md:py-8 sm:py-4 py-3 `}>
+    <div className={`lg:block hidden h-full py-4 lg:py-6 xl:py-8`}>
       <ul
-        className="lg:space-y-7 md:space-y-3.5  sm:space-y-1 w-60    
+        className="space-y-3 lg:space-y-4 xl:space-y-6 w-48 lg:w-56 xl:w-60    
         [&>a]:flex 
-        [&>a]:px-2 
+        [&>a]:px-2 lg:px-3
         [&>a]:cursor-pointer 
         [&>a]:rounded-sm 
-        [&>a>li]:gap-x-2 
-        [&>a>li]:text-[22px]
+        [&>a>li]:gap-x-2 lg:gap-x-3
+        [&>a>li]:text-lg lg:text-xl xl:text-[22px]
         [&>a>li]:flex 
         [&>a>li]:items-center 
-        [&>a>li]:py-2
-        [&>a>li>span]:text-[22px] 
+        [&>a>li]:py-2 lg:py-3
+        [&>a>li>span]:text-lg lg:text-xl xl:text-[22px] 
         [&>a>li>span]:h-5
         [&>a]:transition-all
         [&>a>li]:hover:scale-105"

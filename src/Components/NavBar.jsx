@@ -11,7 +11,6 @@ import { LuTv } from "react-icons/lu";
 import { FaMasksTheater } from "react-icons/fa6";
 import { BsPerson } from "react-icons/bs";
 import Searchbar from "./Searchbar";
-import { getMovieDetails } from "../services/movie_api";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,11 +20,11 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="z-50 sm:sticky top-0 left-0 bg-[#181A1B] w-full py-2 h-16 px-5 flex justify-between items-center">
+    <nav className="z-50 sticky top-0 left-0 bg-[#181A1B] w-full py-2 h-16 px-3 sm:px-4 md:px-5 flex justify-between items-center">
       <div className="logo">
         <a href="/">
           <img
-            className="sm:w-15 md:w-17 w-10"
+            className="w-10 sm:w-12 md:w-14 lg:w-16 h-auto"
             src="/Logo.png"
             alt="UFlicks Logo"
             width={76}
@@ -39,29 +38,29 @@ const NavBar = () => {
           Get Movie Details
         </button> */}
       </div>
-      <div className=" flex text-2xl mb-2 gap-x-5 ">
+      <div className="flex text-xl sm:text-2xl mb-2 gap-x-3 sm:gap-x-5">
         <div className="hidden lg:block">
           <Searchbar />
         </div>
-        <span className="lg:hidden cursor-pointer" onClick={toggleMenu}>
+        <span className="lg:hidden cursor-pointer hover:text-amber-400 transition-colors" onClick={toggleMenu}>
           <GiHamburgerMenu />
         </span>
       </div>
       <div
         className={`${
           isMenuOpen ? "block" : "hidden"
-        } transition-all duration-300 ease-in-out bg-black shadow-lg shadow-neutral-400 absolute top-0 right-0 z-200 p-4 space-y-5 h-330 w-70`}
+        } transition-all duration-300 ease-in-out bg-black shadow-lg shadow-neutral-400 absolute top-0 right-0 z-50 p-4 space-y-5 h-screen w-64 sm:w-72`}
       >
         <div className="w-full text-2xl flex justify-end">
-          <span className="cursor-pointer" onClick={toggleMenu}>
+          <span className="cursor-pointer hover:text-amber-400 transition-colors" onClick={toggleMenu}>
             <RxCross2 />
           </span>
         </div>
         <div>
           <ul
-            className="space-y-5 w-40 [&>li]:flex [&>li]:px-2 [&>li]:pt-1 
-            [&>li]:cursor-pointer [&>li]:rounded-md [&>li]:gap-x-2 [&>li]:text-lg 
-            [&>li>span]:text-[17px] [&>li]:hover:bg-neutral-600"
+            className="space-y-4 w-full [&>li]:flex [&>li]:px-3 [&>li]:py-2 
+            [&>li]:cursor-pointer [&>li]:rounded-md [&>li]:gap-x-3 [&>li]:text-base sm:text-lg 
+            [&>li>span]:text-[16px] sm:[&>li>span]:text-[18px] [&>li]:hover:bg-neutral-600 [&>li]:transition-colors"
           >
             <li>
               <Link
@@ -166,7 +165,7 @@ const NavBar = () => {
           </ul>
         </div>
       </div>
-      <ul className="hidden lg:flex gap-x-6 font-bold md:text-lg lg:text-xl [&>li]:hover:cursor-pointer ">
+      <ul className="hidden lg:flex gap-x-4 xl:gap-x-6 font-bold text-base md:text-lg lg:text-xl [&>li]:hover:cursor-pointer">
         <li>
           <Link to="/about" className="hover:text-amber-400 transition-colors">
             About

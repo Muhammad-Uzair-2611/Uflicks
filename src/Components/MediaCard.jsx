@@ -21,7 +21,7 @@ const MovieCard = (props) => {
         onClick={handleClick}
         id={props.id}
         data-type={props.type}
-        className="w-[120px] h-[180px] sm:w-[150px] sm:h-[225px] md:w-[180px] md:h-[270px] lg:w-[200px] lg:h-[300px] overflow-hidden rounded-lg cursor-pointer mb-2 shadow-sm shadow-gray-500"
+        className="w-[100px] h-[150px] xs:w-[120px] xs:h-[180px] sm:w-[140px] sm:h-[210px] md:w-[160px] md:h-[240px] lg:w-[180px] lg:h-[270px] xl:w-[200px] xl:h-[300px] overflow-hidden rounded-lg cursor-pointer mb-2 shadow-sm shadow-gray-500 transition-transform hover:scale-105"
       >
         <img
           className="w-full h-full object-cover"
@@ -33,9 +33,9 @@ const MovieCard = (props) => {
         />
       </div>
 
-      <span className="font-semibold text-sm sm:text-base md:text-lg">
-        {props.title.length > 15
-          ? props.title.slice(0, 15) + "..."
+      <span className="font-semibold text-xs xs:text-sm sm:text-base md:text-lg truncate max-w-full">
+        {props.title.length > 20
+          ? props.title.slice(0, 20) + "..."
           : props.title}
       </span>
     </>

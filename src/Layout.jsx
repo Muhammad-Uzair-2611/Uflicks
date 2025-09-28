@@ -5,6 +5,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import { MoviesInfoProvider } from "./Context/MovieInfoContext";
 import { useSearch } from "./Context/Searchcontext";
 import Searchbar from "./Components/Searchbar";
+import useDocumentTitle from "./hooks/useDocumentTitle";
 
 const Layout = () => {
   const matches = useMatches();
@@ -12,6 +13,9 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation()
   const hideSearNav = matches.some((match) => match.handle?.hide_navbar);
+  
+  // Set dynamic document title
+  useDocumentTitle();
 
 // useEffect(() => {
 //   if (isFocus && !location.pathname.includes("/search")) {
@@ -21,10 +25,10 @@ const Layout = () => {
 
 
   return (
-    <div className="container mx-auto">
+    <div className="min-h-screen bg-[#181A1B]">
       <ScrollToTop />
       {!hideSearNav && <NavBar />}
-      <div className="block md:hidden py-3">
+      <div className="block lg:hidden px-3 sm:px-4 py-3">
         <Searchbar />
       </div>
       <MoviesInfoProvider>

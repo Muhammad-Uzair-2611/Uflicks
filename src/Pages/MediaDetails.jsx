@@ -137,19 +137,19 @@ const MediaDetails = () => {
               height={1080}
             />
           </div>
-          <div className="md:h-30 h-20 px-4 py-3">
+          <div className="h-16 sm:h-20 md:h-24 px-3 sm:px-4 py-3">
             <span
               onClick={() => navigate(-1)}
-              className="text-3xl sm:text-4xl cursor-pointer"
+              className="text-2xl sm:text-3xl md:text-4xl cursor-pointer hover:text-amber-400 transition-colors"
             >
               <IoArrowBack />
             </span>
           </div>
-          <div className="flex flex-col lg:flex-row gap-x-8 mx-4 sm:mx-8 lg:mx-16">
-            <div className="z-10 h-fit flex flex-col items-center justify-center gap-y-5 mb-5 lg:mb-0">
+          <div className="flex flex-col lg:flex-row gap-x-6 lg:gap-x-8 mx-3 sm:mx-6 lg:mx-16">
+            <div className="z-10 h-fit flex flex-col items-center justify-center gap-y-4 sm:gap-y-5 mb-5 lg:mb-0">
               <div
                 id="poster"
-                className="w-40 sm:w-48 md:w-56 lg:w-60 overflow-hidden h-auto shadow-sm shadow-gray-400 cursor-pointer rounded-lg"
+                className="w-32 sm:w-40 md:w-48 lg:w-56 xl:w-60 overflow-hidden h-auto shadow-sm shadow-gray-400 cursor-pointer rounded-lg"
               >
                 <a href={mediaInfo.ticket} target="_blank">
                   <img
@@ -166,20 +166,20 @@ const MediaDetails = () => {
                 target="_blank"
                 className="w-full sm:w-auto"
               >
-                <button className="w-full transition-all bg-amber-400 text-black py-2.5 font-semibold cursor-pointer px-5 rounded-sm hover:scale-102 translate-y-1 hover:translate-y-0 duration-400 hover:shadow-md hover:shadow-amber-200 text-sm sm:text-base">
+                <button className="w-full transition-all bg-amber-400 text-black py-2 sm:py-2.5 font-semibold cursor-pointer px-4 sm:px-5 rounded-sm hover:scale-105 hover:shadow-md hover:shadow-amber-200 text-xs sm:text-sm md:text-base">
                   Visit Official Site
                 </button>
               </a>
             </div>
             <div className="Info mb-10 lg:mb-20 flex-1">
-              <div className="mb-6 sm:mb-8">
-                <div className="text-xl sm:text-2xl -space-x-1.5 font-semibold tracking-wider">
+              <div className="mb-4 sm:mb-6 md:mb-8">
+                <div className="text-lg sm:text-xl md:text-2xl -space-x-1 font-semibold tracking-wider">
                   <span>{mediaInfo.title}</span>{" "}
-                  <span className="text-[14px] sm:text-[16px] text-neutral-300">
+                  <span className="text-xs sm:text-sm md:text-base text-neutral-300">
                     ({mediaInfo.release.split("-").slice(0, 1)})
                   </span>
                 </div>
-                <div className="py-2 text-amber-400 tracking-wide text-sm sm:text-base">
+                <div className="py-1 sm:py-2 text-amber-400 tracking-wide text-xs sm:text-sm md:text-base">
                   {mediaInfo.tagline || "A story worth watching."}
                 </div>
               </div>
